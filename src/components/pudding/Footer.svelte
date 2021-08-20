@@ -13,12 +13,12 @@
     { name: "twitter", url: "https://twitter.com/puddingviz/" },
     {
       name: "instagram",
-      url: "https://www.instagram.com/the.pudding",
+      url: "https://www.instagram.com/the.pudding"
     },
     { name: "patreon", url: "https://patreon.com/thepudding/" },
     { name: "privacy", url: "https://pudding.cool/privacy/" },
     { name: "newsletter", url: "http://eepurl.com/czym6f" },
-    { name: "rss", url: "https://pudding.cool/feed/index.xml" },
+    { name: "rss", url: "https://pudding.cool/feed/index.xml" }
   ];
 
   onMount(() => {
@@ -28,7 +28,17 @@
   const fetchData = (async () => {
     const response = await fetch(url);
     const data = await response.json();
-    const stories = data.filter((d) => d.url !== localURL).slice(0, 4);
+    const story = data.find((d) => localURL.includes(d.url));
+    const topic = story ? story.topic : "culture";
+    const others = data.filter((d) => !localURL.includes(d.url));
+
+    const diff = data.filter((d) => d.topic !== topic);
+    const same = data.filter((d) => d.topic === topic);
+
+    const stories = [];
+    stories.push(...diff.slice(0, 2));
+    stories.push(same[0]);
+    stories.push(same[Math.ceil(Math.random() * (same.length - 1))]);
     return stories;
   })();
 </script>
@@ -39,9 +49,7 @@
       {#each data as { hed, url, image }}
         <div class="story">
           <a href="https://pudding.cool/{url}">
-            <img
-              src="https://pudding.cool/common/assets/thumbnails/640/{image}.jpg"
-              alt="{hed}" />
+            <img src="https://pudding.cool/common/assets/thumbnails/640/{image}.jpg" alt={hed} />
             <span>{hed}</span>
           </a>
         </div>
@@ -55,8 +63,7 @@
     </div>
     <p>
       <a href="https://pudding.cool">The Pudding</a>
-      is a digital publication that explains ideas debated in culture with
-      visual essays.
+      is a digital publication that explains ideas debated in culture with visual essays.
     </p>
   </section>
 
@@ -64,7 +71,7 @@
     <ul>
       {#each links as link}
         <li>
-          <a href="{link.url}">
+          <a href={link.url}>
             <!-- TODO icon -->
             <span>{link.name.toUpperCase()}</span>
           </a>
