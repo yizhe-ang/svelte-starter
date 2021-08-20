@@ -32,8 +32,8 @@
     const topic = story ? story.topic : "culture";
     const others = data.filter((d) => !localURL.includes(d.url));
 
-    const diff = data.filter((d) => d.topic !== topic);
-    const same = data.filter((d) => d.topic === topic);
+    const diff = others.filter((d) => d.topic !== topic);
+    const same = others.filter((d) => d.topic === topic);
 
     const stories = [];
     stories.push(...diff.slice(0, 2));
