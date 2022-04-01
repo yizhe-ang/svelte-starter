@@ -1,3 +1,4 @@
+@import "baseline.css";
 @import "variables.css";
 @import "normalize.css";
 @import "font.css";
@@ -9,7 +10,7 @@
 	--sans: "National 2 Web", Helvetica, Arial, sans-serif;
 	--serif: "Tiempos Text Web", Georgia, Times, serif;
 	--mono: Menlo, Consolas, Monaco, "Courier New", monospace;
-	
+
 	/* z-index */
 	--z-bottom: -100;
   --z-middle: 0;
@@ -30,5 +31,5 @@
 	--color-border: var(--color-gray-300);
 	--color-selection: var(--color-gray-300);
   --color-highlight: var(--color-yellow);
-	
+
 }
