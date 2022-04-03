@@ -1,9 +1,11 @@
 <script>
   import Demo from "$components/demo/Demo.svelte";
   import WIP from "$components/helpers/WIP.svelte";
-  // import Footer from "$components/Footer.svelte";
+  import Footer from "$components/Footer.svelte";
+  import Playground from "$components/Playground.svelte"
 </script>
 
 <WIP />
+<Playground />
 <Demo />
-<!-- <Footer /> -->
+<Footer />

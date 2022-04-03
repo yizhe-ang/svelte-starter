@@ -175,3 +175,9 @@ import example from "$utils/example.js";
 
 * Any @html tags, e.g., `{@html user}` must be the child of a dom element so they can be properly hydrated.
 * Putting asset paths in CSS doesn't work without some hacks for subdirectory hosted projects
+
+## Additional Packages Installed
+```bash
+npm install -D tippy.js
+npm install -D @rgossiaux/svelte-headlessui
+```
