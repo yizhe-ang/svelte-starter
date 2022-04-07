@@ -177,7 +177,13 @@ import example from "$utils/example.js";
 * Putting asset paths in CSS doesn't work without some hacks for subdirectory hosted projects
 
 ## Additional Packages Installed
-```bash
-npm install -D tippy.js
-npm install -D @rgossiaux/svelte-headlessui
+```json
+{
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "1.0.0-next.34",
+    "tippy.js": "^6.3.7",
+    "@rgossiaux/svelte-headlessui": "^1.0.0-beta.12",
+    "ml-kmeans": "^5.0.0"
+  }
+}
 ```

@@ -1,12 +1,16 @@
 <script>
-  import { range } from "d3";
-  import { LayerCake, Svg } from "layercake";
+  // TODO: K-means voronoi overlay
+  import { LayerCake, Svg, Html } from "layercake";
+  import { spring } from "svelte/motion";
   import Scatter from "$components/k_means/Scatter.svg.svelte";
+  import ListeningRect from "$components/custom_charts/ListeningRect.svelte";
+  import KMeansVoronoi from "$components/k_means/KMeansVoronoi.svelte";
 
   export let data;
+  export let result; // k-means result
 
-  const x = "x";
-  const y = "y";
+  const x = 0;
+  const y = 1;
   const p = 20;
   const padding = {
     top: p,
@@ -17,9 +21,12 @@
 </script>
 
 <figure>
-  <LayerCake {data} {x} {y} {padding}>
+  <!-- TODO: Hardcode data extents -->
+  <LayerCake {data} flatData={data} {x} {y} {padding}>
     <Svg>
-      <Scatter strokeWidth="1" />
+      <ListeningRect />
+      <KMeansVoronoi />
+      <Scatter strokeWidth={1} />
     </Svg>
   </LayerCake>
 </figure>
@@ -31,5 +38,8 @@
     aspect-ratio: 1 / 1;
     margin-left: auto;
     margin-right: auto;
+
+    border: 1px solid lightgrey;
   }
+
 </style>

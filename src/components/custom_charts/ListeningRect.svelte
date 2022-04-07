@@ -1,0 +1,23 @@
+<script>
+  import { getContext } from "svelte";
+
+  const { width, height, padding, data, xScale, yScale } = getContext("LayerCake");
+</script>
+
+<rect
+  on:click={(e) => {
+    // Add data point
+    const x = $xScale.invert(e.offsetX - $padding.left);
+    const y = $yScale.invert(e.offsetY - $padding.top);
+
+    data.update((s) => [...s, [x, y]]);
+  }}
+  height={$height}
+  width={$width}
+/>
+
+<style>
+  rect {
+    fill: hsl(0, 0%, 95%);
+  }
+</style>
