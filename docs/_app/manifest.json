@@ -10,7 +10,8 @@
     "dynamicImports": [
       "src/routes/__layout.svelte",
       ".svelte-kit/runtime/components/error.svelte",
-      "src/routes/index.svelte"
+      "src/routes/index.svelte",
+      "src/routes/test.svelte"
     ]
   },
   "src/routes/__layout.svelte": {
