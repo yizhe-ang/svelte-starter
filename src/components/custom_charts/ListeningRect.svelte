@@ -1,7 +1,8 @@
 <script>
   import { getContext } from "svelte";
 
-  const { width, height, padding, data, xScale, yScale } = getContext("LayerCake");
+  const { width, height, padding, xScale, yScale } = getContext("LayerCake");
+  const { data } = getContext("KMeans");
 </script>
 
 <rect
