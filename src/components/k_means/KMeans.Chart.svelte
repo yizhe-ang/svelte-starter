@@ -2,15 +2,16 @@
   // TODO: K-means voronoi overlay
   import { LayerCake, Svg, Html } from "layercake";
   import { spring } from "svelte/motion";
+  import { fade } from "svelte/transition";
   import { getContext } from "svelte";
   import KMeansScatter from "$lib/components/k_means/KMeans.Scatter.svg.svelte";
   import Scatter from "$lib/components/k_means/Scatter.svg.svelte";
+  import ArrowAxis from "$components/k_means/ArrowAxis.svelte"
   import ListeningRect from "$components/custom_charts/ListeningRect.svelte";
   import KMeansVoronoi from "$components/k_means/KMeans.Voronoi.svelte";
 
   const { data } = getContext("KMeans");
   const { scrollyIndex } = getContext("Scrolly");
-  $: console.log($scrollyIndex);
 
   export let result; // k-means result
 
@@ -35,22 +36,31 @@
   <LayerCake data={$data} flatData={$data} {x} {y} {padding} xDomain={domain} yDomain={domain}>
     <Html>
       <!-- Decorative border -->
-      {#if true}
-        <div class="border" />
+      {#if $scrollyIndex >= 2}
+        <div transition:fade class="border" />
       {/if}
     </Html>
 
     <Svg>
+      <!-- Decoration -->
+      {#if $scrollyIndex === 1}
+        <ArrowAxis />
+      {/if}
+
       <!-- For clicking interactions -->
       {#if true}
         <ListeningRect />
       {/if}
-      {#if false}
-        <KMeansVoronoi stroke={"black"} {centroids} />
+
+      {#if true}
+        <!-- Use the voronoi for clipping? -->
+        <KMeansVoronoi {centroids} />
       {/if}
 
       <!-- Data points -->
-      <KMeansScatter strokeWidth={1} />
+      {#if $scrollyIndex >= 1}
+        <KMeansScatter />
+      {/if}
 
       {#if false}
         <!-- Centroids -->
@@ -80,7 +90,7 @@
 
     /* background-color: lightpink; */
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    /* border-radius: 10px; */
   }
 
 </style>
