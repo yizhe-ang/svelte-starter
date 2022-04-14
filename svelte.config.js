@@ -24,6 +24,7 @@ const config = {
   kit: {
     // FIXME: Decide which adapter to use; static or no?
 		adapter: adapter(),
+    // Prerender everything except pages that are explicitly marked as not prerenderable
     prerender: { default: true },
     files: { lib: "./src" },
     trailingSlash: "always",

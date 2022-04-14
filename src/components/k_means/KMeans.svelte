@@ -1,14 +1,17 @@
 <script>
   // TODO: To include control panel too
   import kMeans from "ml-kmeans";
-  import { range } from "d3";
-  import { setContext } from "svelte";
-  import { writable } from "svelte/store"
+  import { range, shuffle } from "d3";
+  import { setContext, getContext } from "svelte";
+  import { writable } from "svelte/store";
   import KMeansChart from "$components/k_means/KMeans.Chart.svelte";
   import MaxWidthWrapper from "$components/layouts/MaxWidthWrapper.svelte";
 
+  const { blobs } = getContext("Datasets");
+
   // TODO: What toy datasets to use?
-  const data = writable(getData());
+  const numSamples = 60;
+  const data = writable(blobs.slice(0, numSamples));
   setContext("KMeans", { data });
 
   // Run k-means

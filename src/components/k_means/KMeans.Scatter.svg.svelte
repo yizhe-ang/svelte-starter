@@ -2,6 +2,7 @@
   // TODO: Transitions
   // TODO: Use spring motion for drag events? Have to use svelte-motion?
   // Or make every single data point a spring?
+  // FIXME: Should I switch to canvas?
   import { drag, select } from "d3";
   import { spring } from "svelte/motion";
   import { clamp } from "$utils/helpers.js";
@@ -9,7 +10,7 @@
   import { slide, scale, fade } from "svelte/transition";
   import { backOut, backIn, cubicIn } from "svelte/easing";
 
-  const { width, height, xGet, yGet, xScale, yScale } = getContext("LayerCake");
+  const { width, height, xGet, yGet, x, y, xScale, yScale } = getContext("LayerCake");
   const { data } = getContext("KMeans");
 
   export let r = 5;
@@ -39,6 +40,9 @@
 
     select(node).call(dragBehavior);
   }
+
+  $: console.log($data.map((d) => [$x(d), $y(d)]));
+  $: console.log($xScale.domain());
 </script>
 
 <g>
@@ -71,5 +75,6 @@
     pointer-events: auto;
 
     fill-opacity: 0.5;
+    stroke-opacity: 0.3;
   }
 </style>

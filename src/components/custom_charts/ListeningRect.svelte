@@ -19,6 +19,7 @@
 
 <style>
   rect {
-    fill: hsl(0, 0%, 95%);
+    /* fill: hsl(0, 0%, 95%); */
+    fill: transparent;
   }
 </style>

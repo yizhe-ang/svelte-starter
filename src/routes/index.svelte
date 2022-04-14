@@ -5,6 +5,10 @@
   import App from "$components/App.svelte";
   import copy from "$data/doc.json";
   if (browser) console.log("svelte-starter version", __VERSION__);
+  // FIXME: What is the best practice for loading datasets?
+  import blobs from "$data/datasets/blobs.json";
+
+  setContext("Datasets", { blobs });
 
   const preloadFont = [
     "https://pudding.cool/assets/fonts/tiempos/TiemposTextWeb-Regular.woff2",
