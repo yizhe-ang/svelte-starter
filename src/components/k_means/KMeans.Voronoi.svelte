@@ -7,7 +7,7 @@
   import uid from "$utils/uid";
 
   const { scrollyIndex } = getContext("Scrolly");
-  const { width, height, xGet, yGet } = getContext("LayerCake");
+  const { width, height, xGet, yGet, x } = getContext("LayerCake");
 
   export let centroids;
 
@@ -21,7 +21,8 @@
   // Assign each color to a specific quadrant / area?
   $: $centroidsScaled = centroids
     .map((d) => [$xGet(d), $yGet(d)])
-    .sort((a, b) => ascending(a[0], b[0]));
+    .sort((a, b) => ascending($x(a), $x(b)));
+  $: console.log($centroidsScaled);
 
   // Compute data
   $: data = computeData($centroidsScaled);

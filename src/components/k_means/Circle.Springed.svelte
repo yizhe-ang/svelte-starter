@@ -13,8 +13,8 @@
 
   // Every circle has its own spring store as its state
   // TODO: Adjust the spring parameters
-  const position = spring(undefined);
-  // const position = spring([0, 0]);
+  // const position = spring(undefined);
+  const position = spring([0, 0]);
   $: $position = [$xGet(d), $yGet(d)];
   $: console.log($position)
 
