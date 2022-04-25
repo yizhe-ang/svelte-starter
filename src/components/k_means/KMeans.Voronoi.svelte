@@ -22,6 +22,7 @@
   $: $centroidsScaled = centroids
     .map((d) => [$xGet(d), $yGet(d)])
     .sort((a, b) => ascending(a[0], b[0]));
+  $: console.log($centroidsScaled);
 
   // Compute data
   $: data = computeData($centroidsScaled);
