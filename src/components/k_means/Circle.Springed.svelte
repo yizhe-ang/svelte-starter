@@ -14,7 +14,9 @@
   // Every circle has its own spring store as its state
   // TODO: Adjust the spring parameters
   const position = spring(undefined);
+  // const position = spring([0, 0]);
   $: $position = [$xGet(d), $yGet(d)];
+  $: console.log($position)
 
   // To apply drag behavior as an action
   function draggable(node, d) {
@@ -37,17 +39,17 @@
 <circle
   in:scale={{ duration: 500, easing: backOut }}
   out:scale={{ duration: 350, easing: cubicIn }}
-  on:click={(_) => {
+  on:click={() => {
     // Remove selected data point
     data.update((s) => s.filter((datum) => !Object.is(datum, d)));
   }}
+  on:mouseover={() => console.log(d)}
   use:draggable={d}
   style:transform={`translate(${$position[0]}px, ${$position[1]}px)`}
 />
 
 <style>
   circle {
-    /* To make transform transitions anchored on the center of the element */
     transform-box: fill-box;
     transform-origin: center;
     pointer-events: auto;

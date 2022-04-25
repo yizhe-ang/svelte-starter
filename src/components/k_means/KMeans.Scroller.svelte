@@ -36,7 +36,7 @@
 
     <!-- TODO: This can be a dynamic element / component-->
     <!-- generated from data -->
-    {#each [...Array(5).keys()] as text, i}
+    {#each [...Array(10).keys()] as text, i}
       <!-- TODO: Can modularize this -->
       <div class="step" class:active={index === i}>
         <div class="step-content">

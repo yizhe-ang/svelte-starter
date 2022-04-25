@@ -1,39 +1,24 @@
 <script>
   import copy from "$data/copy.json";
+  import Scrolly from "$components/helpers/Scrolly.svelte";
   import Header from "$components/k_means/Header.svelte";
   import Hero from "$components/k_means/Hero.svelte";
-  import ScrollyStepWrapper from "$components/layouts/Scrolly.StepWrapper.svelte";
-  import ScrollyStep from "$components/layouts/Scrolly.Step.svelte";
-  import ScrollyStepContent from "$components/layouts/Scrolly.StepContent.svelte";
+  import ScrollyStepWrapper from "$lib/components/layouts/Scrolly.StepWrapper.svelte";
+  import ScrollyStep from "$lib/components/layouts/Scrolly.Step.svelte";
+  import ScrollyStepContent from "$lib/components/layouts/Scrolly.StepContent.svelte";
   import KMeans from "$components/k_means/KMeans.svelte";
-  import { onMount, setContext } from "svelte";
+  import { setContext } from "svelte";
   import { writable } from "svelte/store";
-  import scrollama from "scrollama";
 
   // TODO: Set index ranges for different scrolly sections / events here
 
   // Scroller parameters
-  // let value;
+  let value;
   const scrollyIndex = writable(undefined);
   setContext("Scrolly", { scrollyIndex });
-  // $: $scrollyIndex = value;
-
-  // Init scrollama
-  onMount(async () => {
-    const scroller = scrollama();
-    scroller
-      .setup({
-        step: ".foreground-wrapper > *",
-        offset: 0.4
-        // parent
-      })
-      .onStepEnter((response) => {
-        $scrollyIndex = response.index;
-      });
-  });
+  $: $scrollyIndex = value;
 </script>
 
-<!-- TODO: Clicking each section title shows the ToC -->
 <!-- TODO: Cool ass hero interactive hero image -->
 <!-- {#if $scrollyIndex === 0}
   <Hero />
@@ -41,19 +26,21 @@
 
 <div class="wrapper">
   <div class="foreground-wrapper">
-    <ScrollyStepWrapper height={"100vh"}>
-      <Header />
-    </ScrollyStepWrapper>
-
-    {#each copy.steps as step, i}
-      <ScrollyStepWrapper height={"auto"}>
-        <ScrollyStep active={$scrollyIndex === i + 1}>
-          <ScrollyStepContent data={step.value} />
-        </ScrollyStep>
+    <Scrolly bind:value>
+      <ScrollyStepWrapper height={"100vh"}>
+        <Header />
       </ScrollyStepWrapper>
-    {/each}
 
-    <div class="spacer" />
+      {#each copy.steps as step, i}
+        <ScrollyStepWrapper height={"auto"}>
+          <ScrollyStep active={$scrollyIndex === i + 1}>
+            <ScrollyStepContent data={step.value} />
+          </ScrollyStep>
+        </ScrollyStepWrapper>
+      {/each}
+
+      <div class="spacer" />
+    </Scrolly>
   </div>
 
   <div class="background-wrapper">

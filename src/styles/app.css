@@ -1,35 +1,83 @@
 @import "baseline.css";
 @import "variables.css";
 @import "normalize.css";
-@import "font.css";
+/* @import "font.css"; */
+/* FIXME: Include italic variant? */
+@import "@fontsource/hahmlet/variable.css";
+@import "@fontsource/inter/variable.css";
 @import "reset.css";
 
 /* colors defined in variables.css */
 :root {
-	/* font */
-	--sans: "National 2 Web", Helvetica, Arial, sans-serif;
-	--serif: "Tiempos Text Web", Georgia, Times, serif;
-	--mono: Menlo, Consolas, Monaco, "Courier New", monospace;
+  /* font */
+  --sans: "InterVariable", Helvetica, Arial, sans-serif;
+  /* --sans: "National 2 Web", Helvetica, Arial, sans-serif; */
+  --serif: "HahmletVariable", Georgia, Times, serif;
+  /* --serif: "Tiempos Text Web", Georgia, Times, serif; */
+  --mono: Menlo, Consolas, Monaco, "Courier New", monospace;
 
-	/* z-index */
-	--z-bottom: -100;
+  /* z-index */
+  --z-bottom: -100;
   --z-middle: 0;
   --z-top: 100;
-	--z-overlay: 1000;
+  --z-overlay: 1000;
 
-	/* presets */
-	--border-radius: 4px;
-	--font-body: var(--serif);
-	--font-form: var(--sans);
-	--color-bg: var(--color-white);
-	--color-fg: var(--color-gray-900);
-	--color-placeholder: var(--color-gray-500);
+  /* presets */
+  --border-radius: 4px;
+  --font-body: var(--serif);
+  --font-form: var(--sans);
+  --color-bg: var(--color-white);
+  --color-fg: var(--color-gray-900);
+  --color-placeholder: var(--color-gray-500);
   --color-link: var(--color-purple);
   --color-focus: var(--color-red);
   --color-form-bg: var(--color-gray-300);
-	--color-form-fg: var(--color-gray-900);
-	--color-border: var(--color-gray-300);
-	--color-selection: var(--color-gray-300);
+  --color-form-fg: var(--color-gray-900);
+  --color-border: var(--color-gray-300);
+  --color-selection: var(--color-gray-300);
   --color-highlight: var(--color-yellow);
 
+  /* shadows */
+  --shadow-color: 0deg 0% 0%;
+  --shadow-elevation-low: 0px 0.2px 0.3px hsl(var(--shadow-color) / 0),
+    0px 0.4px 0.6px hsl(var(--shadow-color) / 0.1), 0px 0.8px 1.2px hsl(var(--shadow-color) / 0.21);
+  --shadow-elevation-medium: 0px 0.2px 0.3px hsl(var(--shadow-color) / 0),
+    0px 1px 1.5px hsl(var(--shadow-color) / 0.08), 0px 2px 3px hsl(var(--shadow-color) / 0.16),
+    0.1px 4.1px 6.2px hsl(var(--shadow-color) / 0.25);
+}
+
+b {
+  font-weight: 650;
+}
+
+p {
+  font-family: var(--sans);
+  font-size: 1.1rem;
+  line-height: 1.9;
+}
+
+h1 {
+  font-family: var(--sans);
+  font-weight: 650;
+  font-size: 4rem;
+  line-height: 1.3;
+  text-align: left;
+
+  margin: 0;
+}
+
+h2 {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 2rem;
+
+  margin: 0;
+}
+
+h4 {
+  font-family: var(--sans);
+  font-weight: 250;
+  font-size: 2rem;
+
+  margin: 0;
 }

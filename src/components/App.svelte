@@ -4,7 +4,6 @@
   import WIP from "$components/helpers/WIP.svelte";
   import Footer from "$components/Footer.svelte";
   import KMeansScrolly from "$lib/components/k_means/KMeans.Scrolly.svelte";
-  import KMeansHero from "$components/k_means/KMeans.Hero.svelte";
 
   const copy = getContext("copy");
   console.log(copy);
@@ -12,15 +11,15 @@
 
 <!-- <WIP /> -->
 
-<section id="hero">
+<!-- <section id="hero">
   <KMeansHero>
     <h1>K-Means Clustering</h1>
     <h2>A Visual Explainer</h2>
   </KMeansHero>
-</section>
+</section> -->
 
 <!-- FIXME: Do I need these semantic tags? -->
-<section id="scolly">
+<section id="scrolly">
   <KMeansScrolly />
 </section>
 

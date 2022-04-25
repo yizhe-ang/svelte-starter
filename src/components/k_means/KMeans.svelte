@@ -10,64 +10,83 @@
   const { blobs } = getContext("Datasets");
   const { scrollyIndex } = getContext("Scrolly");
 
+  const x = (d) => d.x;
+  const y = (d) => d.y;
+
   // TODO: What toy datasets to use?
-  const numSamples = 60;
-  // const data = writable(undefined);
-  const data = writable(range(numSamples).map((_) => [0, 0]));
+  const numSamples = 45;
+  // const data = writable(range(numSamples).map(() => [0, 0]));
+  const data = writable(
+    range(numSamples).map(() => ({
+      x: 0,
+      y: 0
+    }))
+  );
   // const data = writable(blobs.slice(0, numSamples));
   setContext("KMeans", { data });
 
   // Run k-means
   const numClusters = 3;
-  $: kMeansResult = kMeans($data, numClusters, {
-    withIterations: false // whether to store result for each iteration,
-    // distanceFunction: squaredDistance
-    // initialization: "kmeans++",
-  });
+  let kMeansResult;
+  $: kMeansResult = kMeans(
+    $data.map((d) => [x(d), y(d)]),
+    numClusters,
+    {
+      withIterations: false // whether to store result for each iteration,
+      // distanceFunction: squaredDistance
+      // initialization: "kmeans++",
+    }
+  );
 
-  // Scolly events
-  $: console.log($scrollyIndex);
+  // $: console.table($data)
+  // $: console.log("data", data);
+  // Scrolly events
+  $: console.log("step", $scrollyIndex);
   $: runScrollyEvents($scrollyIndex);
-
   function runScrollyEvents(index) {
     if (index === undefined) {
       // All points start from zero
       // $data = range(numSamples).map((_) => [0, 0]);
-    } else if (index === 0) {
+    } else if (index === 1) {
       // $data = range(numSamples).map((_) => [0, 0]);
-      $data.map((d) => {
-        d[0] = 0;
-        d[1] = 0;
+      // $data.map((d) => {
+      //   d.x = 0;
+      //   d.y = 0;
+      // });
+      $data.map((d, i) => {
+        d.x = blobs[i][0];
+        d.y = blobs[i][1];
       });
       $data = $data;
-    } else if (index === 1) {
+    } else if (index === 2) {
+      // FIXME: To destroy the timeout when the index changes?
       // Init y positions
       setTimeout(() => {
-        $data.map((d, i) => (d[1] = blobs[i][1]));
+        $data.map((d, i) => (d.y = blobs[i][1]));
         $data = $data;
       }, 500);
 
       // Then x positions
       setTimeout(() => {
-        $data.map((d, i) => (d[0] = blobs[i][0]));
+        $data.map((d, i) => (d.x = blobs[i][0]));
         $data = $data;
       }, 900);
     }
   }
 
-  function getData() {
-    // return range(50).map((_) => ({
-    //   x: Math.random(),
-    //   y: Math.random()
-    // }));
-    return range(50).map((_) => [Math.random(), Math.random()]);
-  }
+  // function getData() {
+  //   // return range(50).map((_) => ({
+  //   //   x: Math.random(),
+  //   //   y: Math.random()
+  //   // }));
+  //   return range(50).map((_) => [Math.random(), Math.random()]);
+  // }
 </script>
 
-<MaxWidthWrapper>
+<!-- <MaxWidthWrapper>
   <button on:click={() => ($data = getData())}> Change Data </button>
-</MaxWidthWrapper>
-<KMeansChart result={kMeansResult} />
+</MaxWidthWrapper> -->
+<KMeansChart {x} {y} result={kMeansResult} />
 
 <style>
 </style>
