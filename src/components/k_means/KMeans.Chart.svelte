@@ -61,7 +61,7 @@
         <ListeningRect />
       {/if}
 
-      {#if true}
+      {#if $scrollyIndex >= 3}
         <KMeansVoronoi {centroids} />
       {/if}
 

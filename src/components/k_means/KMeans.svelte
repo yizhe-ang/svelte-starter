@@ -49,14 +49,14 @@
       // $data = range(numSamples).map((_) => [0, 0]);
     } else if (index === 1) {
       // $data = range(numSamples).map((_) => [0, 0]);
-      // $data.map((d) => {
-      //   d.x = 0;
-      //   d.y = 0;
-      // });
-      $data.map((d, i) => {
-        d.x = blobs[i][0];
-        d.y = blobs[i][1];
+      $data.map((d) => {
+        d.x = 0;
+        d.y = 0;
       });
+      // $data.map((d, i) => {
+      //   d.x = blobs[i][0];
+      //   d.y = blobs[i][1];
+      // });
       $data = $data;
     } else if (index === 2) {
       // FIXME: To destroy the timeout when the index changes?

@@ -16,7 +16,6 @@
   // const position = spring(undefined);
   const position = spring([0, 0]);
   $: $position = [$xGet(d), $yGet(d)];
-  $: console.log($position)
 
   // To apply drag behavior as an action
   function draggable(node, d) {
@@ -25,8 +24,10 @@
       select(node).raise();
 
       // Modify data point, while clamping to valid bounds
-      d[0] = $xScale.invert(clamp(e.x, 0, $width));
-      d[1] = $yScale.invert(clamp(e.y, 0, $height));
+      // d[0] = $xScale.invert(clamp(e.x, 0, $width));
+      // d[1] = $yScale.invert(clamp(e.y, 0, $height));
+      d.x = $xScale.invert(clamp(e.x, 0, $width));
+      d.y = $yScale.invert(clamp(e.y, 0, $height));
 
       // Activate reactivity
       $data = $data;

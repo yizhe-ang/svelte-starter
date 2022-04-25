@@ -11,7 +11,8 @@
     const x = $xScale.invert(e.offsetX - $padding.left);
     const y = $yScale.invert(e.offsetY - $padding.top);
 
-    data.update((s) => [...s, [x, y]]);
+    // data.update((s) => [...s, [x, y]]);
+    data.update((s) => [...s, { x, y }]);
   }}
   height={$height}
   width={$width}
