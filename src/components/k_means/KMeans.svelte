@@ -10,18 +10,12 @@
   const { blobs } = getContext("Datasets");
   const { scrollyIndex } = getContext("Scrolly");
 
-  const x = (d) => d.x;
-  const y = (d) => d.y;
+  const x = (d) => d[0];
+  const y = (d) => d[1];
 
   // TODO: What toy datasets to use?
   const numSamples = 45;
-  // const data = writable(range(numSamples).map(() => [0, 0]));
-  const data = writable(
-    range(numSamples).map(() => ({
-      x: 0,
-      y: 0
-    }))
-  );
+  const data = writable(range(numSamples).map(() => [0, 0]));
   // const data = writable(blobs.slice(0, numSamples));
   setContext("KMeans", { data });
 
@@ -48,27 +42,27 @@
       // All points start from zero
       // $data = range(numSamples).map((_) => [0, 0]);
     } else if (index === 1) {
-      // $data = range(numSamples).map((_) => [0, 0]);
+      $data = range(numSamples).map((_) => [0, 0]);
       // $data.map((d) => {
       //   d.x = 0;
       //   d.y = 0;
       // });
-      $data.map((d, i) => {
-        d.x = blobs[i][0];
-        d.y = blobs[i][1];
-      });
+      // $data.map((d, i) => {
+      //   d.x = blobs[i][0];
+      //   d.y = blobs[i][1];
+      // });
       $data = $data;
     } else if (index === 2) {
       // FIXME: To destroy the timeout when the index changes?
       // Init y positions
       setTimeout(() => {
-        $data.map((d, i) => (d.y = blobs[i][1]));
+        $data.map((d, i) => (d[1] = blobs[i][1]));
         $data = $data;
       }, 500);
 
       // Then x positions
       setTimeout(() => {
-        $data.map((d, i) => (d.x = blobs[i][0]));
+        $data.map((d, i) => (d[0] = blobs[i][0]));
         $data = $data;
       }, 900);
     }

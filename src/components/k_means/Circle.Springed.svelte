@@ -16,7 +16,6 @@
   const position = spring(undefined);
   // const position = spring([0, 0]);
   $: $position = [$xGet(d), $yGet(d)];
-  $: console.log($position)
 
   // To apply drag behavior as an action
   function draggable(node, d) {
