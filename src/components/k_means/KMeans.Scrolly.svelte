@@ -24,7 +24,7 @@
     scroller
       .setup({
         step: ".foreground-wrapper > *",
-        offset: 0.4
+        offset: 0.5
         // parent
       })
       .onStepEnter((response) => {

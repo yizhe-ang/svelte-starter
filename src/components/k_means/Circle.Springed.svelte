@@ -10,11 +10,17 @@
   const { data } = getContext("KMeans");
 
   export let d;
+  export let r = 5;
+  export let fill = "#ccc";
+  export let fillOpacity = "0.5";
+  export let stroke = "#000";
+  export let strokeWidth = 1;
+  export let strokeOpacity = 0.3;
+  export let pointerEvents = "auto";
 
   // Every circle has its own spring store as its state
   // TODO: Adjust the spring parameters
-  // const position = spring(undefined);
-  const position = spring([0, 0]);
+  const position = spring(undefined);
   $: $position = [$xGet(d), $yGet(d)];
 
   // To apply drag behavior as an action
@@ -24,8 +30,6 @@
       select(node).raise();
 
       // Modify data point, while clamping to valid bounds
-      // d[0] = $xScale.invert(clamp(e.x, 0, $width));
-      // d[1] = $yScale.invert(clamp(e.y, 0, $height));
       d.x = $xScale.invert(clamp(e.x, 0, $width));
       d.y = $yScale.invert(clamp(e.y, 0, $height));
 
@@ -44,9 +48,15 @@
     // Remove selected data point
     data.update((s) => s.filter((datum) => !Object.is(datum, d)));
   }}
-  on:mouseover={() => console.log(d)}
   use:draggable={d}
   style:transform={`translate(${$position[0]}px, ${$position[1]}px)`}
+  {r}
+  {fill}
+  fill-opacity={fillOpacity}
+  {stroke}
+  stroke-width={strokeWidth}
+  stroke-opacity={strokeOpacity}
+  pointer-events={pointerEvents}
 />
 
 <style>
@@ -55,11 +65,13 @@
     transform-origin: center;
     pointer-events: auto;
 
-    r: 5;
+    transition: fill 250ms;
+
+    /* r: 5;
     fill: #ccc;
     fill-opacity: 0.5;
     stroke: #000;
     stroke-width: 1;
-    stroke-opacity: 0.3;
+    stroke-opacity: 0.3; */
   }
 </style>
