@@ -3,6 +3,8 @@
 
   const { width, height, padding, xScale, yScale } = getContext("LayerCake");
   const { data } = getContext("KMeans");
+
+  export let pointerEvents = "auto";
 </script>
 
 <rect
@@ -11,11 +13,11 @@
     const x = $xScale.invert(e.offsetX - $padding.left);
     const y = $yScale.invert(e.offsetY - $padding.top);
 
-    // data.update((s) => [...s, [x, y]]);
     data.update((s) => [...s, { x, y }]);
   }}
   height={$height}
   width={$width}
+  style:pointer-events={pointerEvents}
 />
 
 <style>

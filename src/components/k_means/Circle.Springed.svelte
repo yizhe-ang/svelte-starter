@@ -56,7 +56,7 @@
   {stroke}
   stroke-width={strokeWidth}
   stroke-opacity={strokeOpacity}
-  pointer-events={pointerEvents}
+  style:pointer-events={pointerEvents}
 />
 
 <style>

@@ -74,10 +74,22 @@ h2 {
   margin: 0;
 }
 
+h3 {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.5rem;
+
+  margin: 0;
+}
+
 h4 {
   font-family: var(--sans);
   font-weight: 250;
   font-size: 2rem;
 
   margin: 0;
+}
+
+label, input {
+  font-family: var(--sans);
 }

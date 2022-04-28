@@ -2,7 +2,7 @@
   import Arrow from "$components/custom_charts/Arrow.svelte";
   import { getContext } from "svelte";
 
-  const { width, height, xGet, yGet, xScale, yScale } = getContext("LayerCake");
+  const { width, height } = getContext("LayerCake");
 
 </script>
 

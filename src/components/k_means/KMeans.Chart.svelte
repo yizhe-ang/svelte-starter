@@ -10,14 +10,13 @@
   import CircleSpringed from "$lib/components/k_means/Circle.Springed.svelte";
   import ArrowAxis from "$components/k_means/ArrowAxis.svelte";
   import ListeningRect from "$components/custom_charts/ListeningRect.svelte";
-  import KMeansVoronoi from "$components/k_means/KMeans.Voronoi.svelte";
+  import KMeansVoronoi from "$lib/components/k_means/Voronoi.svelte";
 
-  const { data } = getContext("KMeans");
+  const { data, centroids, clusterIds } = getContext("KMeans");
   const { scrollyIndex } = getContext("Scrolly");
 
   export let x;
   export let y;
-  export let result; // k-means result
 
   // Hardcode sample data to explain distance metric
   const sampleData = [
@@ -40,27 +39,6 @@
   };
   const inset = 0.02;
   const domain = [0 - inset, 1 + inset];
-
-  $: centroidPos = result.centroids.map((d) => d.centroid);
-  $: centroids = centroidPos
-    .map((d, i) => ({
-      x: d[0],
-      y: d[1],
-      i
-    }))
-    // TODO: Sort the centroids so that the colors are somewhat consistent
-    // Project the points onto 1d plane
-    // Assign each color to a specific quadrant / area?
-    .sort((a, b) => ascending(a.x, b.x))
-    .map((d, i) => ({
-      ...d,
-      clusterId: i
-    }));
-  // HACK:
-  $: clusterIdMap = new Map(centroids.map((d) => [d.i, d.clusterId]));
-
-  // Re-index cluster ids after sorting
-  $: clusterIds = result.clusters.map((d) => clusterIdMap.get(d));
 </script>
 
 <figure>
@@ -82,19 +60,23 @@
 
       <!-- For clicking interactions -->
       {#if true}
-        <ListeningRect />
+        <ListeningRect pointerEvents={$scrollyIndex >= 11 ? "auto" : "none"} />
       {/if}
 
       <!-- Voronoi and related shapes -->
       {#if $scrollyIndex >= 2}
-        <KMeansVoronoi {centroids} {clusterIds} />
+        <KMeansVoronoi />
       {/if}
 
       <!-- Data points -->
       {#if $scrollyIndex >= 2}
         <!-- <KMeansScatter /> -->
         {#each $data as d, i (d)}
-          <CircleSpringed {d} fill={$scrollyIndex >= 9 ? clusterColors[clusterIds[i]] : "#ccc"} />
+          <CircleSpringed
+            {d}
+            fill={$scrollyIndex >= 50 ? clusterColors[$clusterIds[i]] : "#ccc"}
+            pointerEvents={$scrollyIndex >= 11 ? "auto" : "none"}
+          />
         {/each}
       {/if}
 
@@ -132,7 +114,6 @@
 
     /* border: 1px solid lightgrey; */
   }
-
   .border {
     position: absolute;
     top: 0;
