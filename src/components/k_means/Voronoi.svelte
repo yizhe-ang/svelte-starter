@@ -1,6 +1,6 @@
 <script>
   import { getContext } from "svelte";
-  import { least, select, drag, Delaunay, schemeSet3, schemePastel1, ascending } from "d3";
+  import { leastIndex, select, drag, Delaunay, schemeSet3, schemePastel1, ascending } from "d3";
   import { clamp } from "$utils/helpers.js";
   import { clusterColors } from "$stores/misc";
   import { fade, scale, draw } from "svelte/transition";
@@ -10,13 +10,14 @@
   import VoronoiLine from "$components/k_means/Voronoi.Line.svelte";
 
   const { scrollyIndex } = getContext("Scrolly");
-  const { data, centroids, clusterIds } = getContext("KMeans");
+  const { data, centroids, centroidsHistory, clusterAssignments } = getContext("KMeans");
   const { width, height, xScale, yScale, xGet, yGet } = getContext("LayerCake");
 
-  const key = (d) => `${$centroids.length}-${d.clusterId}`;
+  // const key = (d) => `${$centroids.length}-${d.clusterId}`;
 
   // FIXME: There should be a spring for each centroid?
   // Or define a new spring whenever number of cluster changes
+  // NOTE: Has to be sorted because the spring value is fixed
   let centroidsSpringed = spring(undefined);
   $: updateSpring($centroids);
   function updateSpring(centroids) {
@@ -48,14 +49,24 @@
     }));
   }
 
-  // $: idToCentroid = new Map(centroidData.map((d) => [d.clusterId, d]));
+  const assignmentsHistory = [undefined, $clusterAssignments]
+  $: updateAssignmentHistory($clusterAssignments)
+  function updateAssignmentHistory(clusterAssignments) {
+    assignmentsHistory[0] = assignmentsHistory[1]
+    assignmentsHistory[1] = clusterAssignments
+  }
+  let currentAssignments = assignmentsHistory[1]
 
-  // TODO: Limit the cases where this is run, i.e. only when have to draw lines
-  // Find the assigned centroid for each data point
-  // $: assignments = $data.map((d) => closest(d, $centroids));
-  // $: if (assignments) {
-  //   console.log("run");
-  // }
+  // Manual updating of centroids
+  $: if ($scrollyIndex >= 12 && $scrollyIndex <= 14) {
+    $centroids = $centroidsHistory[0]
+    updateSpring($centroids);
+    currentAssignments = assignmentsHistory[1]
+  } else if ($scrollyIndex === 15) {
+    $centroids = $centroidsHistory[1]
+    updateSpring($centroids)
+    currentAssignments = assignmentsHistory[0]
+  }
 
   // To apply drag behavior as an action
   function draggable(node, i) {
@@ -73,15 +84,11 @@
 
     select(node).call(dragBehavior);
   }
-
-  function closest(d, arr) {
-    return least(arr, (a) => Math.hypot(a.x - d.x, a.y - d.y));
-  }
 </script>
 
 <!-- Clip paths -->
 <defs>
-  {#each centroidData as d, i (key(d))}
+  {#each centroidData as d, i (`${i}-${$centroids.length}`)}
     <clipPath id={d.id.id}>
       <path d={d.d} />
     </clipPath>
@@ -91,7 +98,7 @@
 <!-- Clipped centroids -->
 <!-- Using the voronoi cells as the clip path -->
 {#if ($scrollyIndex >= 3 && $scrollyIndex <= 3) || ($scrollyIndex >= 5 && $scrollyIndex <= 5)}
-  {#each centroidData as d, i (key(d))}
+  {#each centroidData as d, i (`${i}-${$centroids.length}`)}
     <g clip-path={d.id}>
       <circle
         in:scale={{
@@ -105,7 +112,7 @@
           easing: cubicIn
         }}
         class="centroid-overlay"
-        fill={clusterColors[d.clusterId]}
+        fill={clusterColors[i]}
         r={$scrollyIndex === 5 ? $width : 120}
         style:transform={`translate(${$xGet(d)}px, ${$yGet(d)}px)`}
       />
@@ -116,14 +123,14 @@
 <!-- FIXME: Should I leave the path stroke in? -->
 <!-- So that changes in the boundary would be more obvious -->
 {#if $scrollyIndex >= 5 && $scrollyIndex <= 5}
-  {#each centroidData as d, i (key(d))}
+  {#each centroidData as d, i (`${i}-${$centroids.length}`)}
     <path
       in:draw={{ duration: 1500 }}
       out:fade={{ duration: 350 }}
       class="voronoi-cell"
       d={d.d}
       fill-opacity={0}
-      stroke={clusterColors[d.clusterId]}
+      stroke={clusterColors[i]}
     />
     <!-- <path
       in:draw={{ duration: 1500 }}
@@ -141,27 +148,16 @@
 {/if}
 
 <!-- Lines from data point to centroid -->
-{#if $scrollyIndex >= 11 && $scrollyIndex <= 11}
-  <!-- {#each $data as d, i (d)}
-    {@const c = idToCentroid.get($clusterIds[i])}
-    <Line data={[d, c]} />
-  {/each} -->
-
-  <!-- {#each $data as d, i (`${i}-${assignments[i].clusterId}`)}
-    {@const c = closest(d, $centroidsSpringed)}
-    {@const c = assignments[i]}
-    <VoronoiLine data={[d, c]} stroke={clusterColors[c.clusterId]} />
-  {/each} -->
-
+{#if $scrollyIndex >= 11 && $scrollyIndex <= 11 || $scrollyIndex >= 14}
   {#each $data as d, i (i)}
-    {@const c = closest(d, $centroidsSpringed)}
-    <VoronoiLine data={[d, c]} stroke={clusterColors[c.clusterId]} />
+    {@const { c, i: cI } = $clusterAssignments[i]}
+    <VoronoiLine data={[d, c]} stroke={clusterColors[cI]} />
   {/each}
 {/if}
 
 <!-- Interactive centroids -->
-{#if $scrollyIndex >= 8 && $scrollyIndex <= 11}
-  {#each centroidData as d, i (key(d))}
+{#if ($scrollyIndex >= 8 && $scrollyIndex <= 11) || $scrollyIndex >= 13}
+  {#each centroidData as d, i (`${i}-${$centroids.length}`)}
     <circle
       in:scale={{
         duration: 500,
@@ -174,7 +170,7 @@
       }}
       use:draggable={i}
       class="centroid"
-      fill={clusterColors[d.clusterId]}
+      fill={clusterColors[i]}
       style:transform={`translate(${$xGet(d)}px, ${$yGet(d)}px)`}
       style:pointer-events={"auto"}
     />

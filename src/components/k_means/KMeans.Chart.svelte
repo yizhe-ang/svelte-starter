@@ -12,7 +12,7 @@
   import ListeningRect from "$components/custom_charts/ListeningRect.svelte";
   import KMeansVoronoi from "$lib/components/k_means/Voronoi.svelte";
 
-  const { data, centroids, clusterIds } = getContext("KMeans");
+  const { data, clusterAssignments } = getContext("KMeans");
   const { scrollyIndex } = getContext("Scrolly");
 
   export let x;
@@ -60,7 +60,7 @@
 
       <!-- For clicking interactions -->
       {#if true}
-        <ListeningRect pointerEvents={$scrollyIndex >= 11 ? "auto" : "none"} />
+        <ListeningRect pointerEvents={$scrollyIndex >= 11 ? "auto" : "auto"} />
       {/if}
 
       <!-- Voronoi and related shapes -->
@@ -74,8 +74,8 @@
         {#each $data as d, i (d)}
           <CircleSpringed
             {d}
-            fill={$scrollyIndex >= 50 ? clusterColors[$clusterIds[i]] : "#ccc"}
-            pointerEvents={$scrollyIndex >= 11 ? "auto" : "none"}
+            fill={$scrollyIndex >= 50 ? clusterColors[$clusterAssignments[i].i] : "#ccc"}
+            pointerEvents={$scrollyIndex >= 11 ? "auto" : "auto"}
           />
         {/each}
       {/if}

@@ -18,8 +18,8 @@
 </script>
 
 <path
-  in:draw={{ duration: 400 }}
-  out:draw={{ duration: 400  }}
+  in:draw={{ duration: 700 }}
+  out:draw={{ duration: 700  }}
   d={pathD}
   {stroke}
   stroke-width={strokeWidth}
