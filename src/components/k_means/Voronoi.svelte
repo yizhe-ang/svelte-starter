@@ -49,23 +49,46 @@
     }));
   }
 
-  const assignmentsHistory = [undefined, $clusterAssignments]
-  $: updateAssignmentHistory($clusterAssignments)
-  function updateAssignmentHistory(clusterAssignments) {
-    assignmentsHistory[0] = assignmentsHistory[1]
-    assignmentsHistory[1] = clusterAssignments
+  // FIXME: Keep history of centroids instead?
+  // And then update centroidsSpring
+  // const assignmentsHistory = [undefined, $clusterAssignments]
+  // $: updateAssignmentHistory($clusterAssignments)
+  // function updateAssignmentHistory(clusterAssignments) {
+  //   assignmentsHistory[0] = assignmentsHistory[1]
+  //   assignmentsHistory[1] = clusterAssignments
+  // }
+  // let currentAssignments = assignmentsHistory[1]
+
+  // Compute cluster assignments
+  let keepPrev = false;
+  let assignmentsBuffer = [undefined, undefined];
+  $: assignments = updateAssignments($centroidsSpringed, keepPrev);
+  function updateAssignments(centroidsSpringed, keepPrev) {
+    // Change the positions of the centroids
+    // But keep the assignments the same
+    if (keepPrev) {
+      return assignments.map(({ c, i }) => ({
+        c: centroidsSpringed[i],
+        i
+      }));
+    } else {
+      return $data.map((d) => closest(d, centroidsSpringed));
+    }
   }
-  let currentAssignments = assignmentsHistory[1]
+
+  // TODO: Also have to keep cache of index assignments?
+  // update centroidsSpring
+  // -> update assignments, which contain centroid positions and index assignments
 
   // Manual updating of centroids
   $: if ($scrollyIndex >= 12 && $scrollyIndex <= 14) {
-    $centroids = $centroidsHistory[0]
-    updateSpring($centroids);
-    currentAssignments = assignmentsHistory[1]
+    updateSpring($centroidsHistory[0]);
   } else if ($scrollyIndex === 15) {
-    $centroids = $centroidsHistory[1]
-    updateSpring($centroids)
-    currentAssignments = assignmentsHistory[0]
+    keepPrev = true;
+    updateSpring($centroidsHistory[1]);
+  } else if ($scrollyIndex === 16) {
+    keepPrev = false;
+    updateSpring($centroidsHistory[1]);
   }
 
   // To apply drag behavior as an action
@@ -83,6 +106,13 @@
     });
 
     select(node).call(dragBehavior);
+  }
+
+  // FIXME: Cluster assignments must be tied to spring
+  function closest(d, arr) {
+    const i = leastIndex(arr, (a) => Math.hypot(a.x - d.x, a.y - d.y));
+
+    return { c: arr[i], i };
   }
 </script>
 
@@ -148,9 +178,10 @@
 {/if}
 
 <!-- Lines from data point to centroid -->
-{#if $scrollyIndex >= 11 && $scrollyIndex <= 11 || $scrollyIndex >= 14}
+{#if ($scrollyIndex >= 11 && $scrollyIndex <= 11) || $scrollyIndex >= 14}
   {#each $data as d, i (i)}
-    {@const { c, i: cI } = $clusterAssignments[i]}
+    <!-- {@const { c, i: cI } = closest(d, $centroidsSpringed)} -->
+    {@const { c, i: cI } = assignments[i]}
     <VoronoiLine data={[d, c]} stroke={clusterColors[cI]} />
   {/each}
 {/if}

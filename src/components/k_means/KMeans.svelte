@@ -24,7 +24,6 @@
   // const data = writable(blobs.slice(0, numSamples));
   const centroids = writable(undefined);
   const centroidsHistory = writable(undefined);
-  const clusterIds = writable(undefined);
   const clusterAssignments = writable(undefined);
 
   // Store all chart data inside a context
@@ -145,10 +144,10 @@
   // $: $clusterIds = kMeansData.clusterIds;
 
   // Compute cluster assignments
-  $: $clusterAssignments = updateClusterAssignments($centroids);
-  function updateClusterAssignments(centroids) {
-    return $data.map((d) => closest(d, centroids));
-  }
+  // $: $clusterAssignments = updateClusterAssignments($centroids);
+  // function updateClusterAssignments(centroids) {
+  //   return $data.map((d) => closest(d, centroids));
+  // }
 
   // Scrolly events that changes data
   $: console.log("step", $scrollyIndex);
@@ -197,6 +196,8 @@
 
 <MaxWidthWrapper>
   <!-- <button on:click={() => ($data = getData())}> Change Data </button> -->
+
+  <!-- TODO: Iteration counter -->
 
   <label for="num-clusters">k:</label>
   <input
