@@ -20,8 +20,11 @@
   export let y;
 
   // Update data extents
-  let xExtent = [0, 1];
-  let yExtent = [0, 1];
+  // let xExtent = [0, 1];
+  // let yExtent = [0, 1];
+  let xExtent;
+  let yExtent;
+  $: console.log(yExtent);
 
   $: updateExtent(xExtent, "x");
   $: updateExtent(yExtent, "y");
@@ -76,8 +79,8 @@
     <Svg>
       <!-- Marginal distributions -->
       {#if $scrollyIndex >= 3}
-        <Histogram bind:brushExtent={xExtent} type={"x"} {inset} />
-        <Histogram bind:brushExtent={yExtent} type={"y"} {inset} />
+        <Histogram bind:data={$data} bind:brushExtent={xExtent} type={"x"} {inset} />
+        <Histogram bind:data={$data} bind:brushExtent={yExtent} type={"y"} {inset} />
       {/if}
 
       <!-- Decoration -->
