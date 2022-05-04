@@ -20,8 +20,10 @@
   export let y;
 
   // Update data extents
-  let xExtent = [0, 1];
-  let yExtent = [0, 1];
+  // let xExtent = [0, 1];
+  // let yExtent = [0, 1];
+  let xExtent;
+  let yExtent;
   $: console.log(yExtent);
 
   $: updateExtent(xExtent, "x");
