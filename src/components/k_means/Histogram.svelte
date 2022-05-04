@@ -3,12 +3,15 @@
   import { getContext } from "svelte";
 
   // FIXME: Should not update in response to brush events
-  const { data } = getContext("KMeans");
+  // const { data } = getContext("KMeans");
   const { width, height, xScale, yScale, xGet, yGet } = getContext("LayerCake");
 
+  export let data = [0];
   export let type = "x";
   export let inset;
   export let brushExtent = [0, 1];
+
+  $: console.log(data);
 
   const accessor = type === "x" ? (d) => d.x : type === "y" ? (d) => d.y : null;
   // $: histogramXScale = type === "x" ? $xScale : type === "y" ? $yScale : null;
@@ -16,6 +19,9 @@
 
   const histogramHeight = 70;
   const thresholds = 15;
+
+  $: dataExtent = extent(data, accessor);
+  $: dataExtentScaled = dataExtent.map(histogramXScale);
 
   // Draw histogram
   // FIXME: Should I use KDE instead?
@@ -25,7 +31,7 @@
     .value(accessor)
     .thresholds(thresholds);
 
-  $: histogramBins = histogramGenerator($data);
+  $: histogramBins = histogramGenerator(data);
 
   $: histogramYScale = scaleLinear()
     .domain(extent(histogramBins, (d) => d.length))
@@ -72,8 +78,8 @@
     select(node)
       .call(brush)
       // FIXME: Have to update as dataset changes
-      .call(brush.move, [0, $height])
-      // .call(brush.move, extents)
+      // .call(brush.move, [0, $height])
+      .call(brush.move, dataExtentScaled)
       // Remove overlay pointer-events
       .select(".overlay")
       .attr("pointer-events", "none");

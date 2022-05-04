@@ -77,8 +77,8 @@
     <Svg>
       <!-- Marginal distributions -->
       {#if $scrollyIndex >= 3}
-        <Histogram bind:brushExtent={xExtent} type={"x"} {inset} />
-        <Histogram bind:brushExtent={yExtent} type={"y"} {inset} />
+        <Histogram bind:data={$data} bind:brushExtent={xExtent} type={"x"} {inset} />
+        <Histogram bind:data={$data} bind:brushExtent={yExtent} type={"y"} {inset} />
       {/if}
 
       <!-- Decoration -->
