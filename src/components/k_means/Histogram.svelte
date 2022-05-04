@@ -14,6 +14,11 @@
   // $: histogramXScale = type === "x" ? $xScale : type === "y" ? $yScale : null;
   $: histogramXScale = $xScale;
 
+  $: dataExtents = extent($data, accessor);
+  $: dataExtentsScaled = dataExtents.map(histogramXScale);
+
+  $: console.log(dataExtentsScaled);
+
   const histogramHeight = 70;
   const thresholds = 15;
 
@@ -66,23 +71,38 @@
     // FIXME: Update dataset on brushed
   }
 
-  function brushable(node) {
+  function brushable(node, move) {
     // const extents = extent($data, accessor).map($xScale.invert)
 
-    select(node)
+    // select(node)
+    //   .call(brush)
+    //   // FIXME: Have to update as dataset changes
+    //   // .call(brush.move, [0, $height])
+    //   .call(brush.move, move)
+    //   // Remove overlay pointer-events
+    //   .select(".overlay")
+    //   .attr("pointer-events", "none");
+
+    const selection = select(node)
       .call(brush)
       // FIXME: Have to update as dataset changes
-      .call(brush.move, [0, $height])
-      // .call(brush.move, extents)
-      // Remove overlay pointer-events
-      .select(".overlay")
-      .attr("pointer-events", "none");
+      // .call(brush.move, [0, $height])
+      .call(brush.move, move);
+
+    // Remove overlay pointer-events
+    selection.select(".overlay").attr("pointer-events", "none");
+
+    return {
+      update: (move) => {
+        selection.call(brush.move, move);
+      }
+    };
   }
 </script>
 
 <g class="wrapper" style:transform transform-origin={transformOrigin}>
   <path {d} />
-  <g use:brushable class="brush" />
+  <g use:brushable={dataExtentsScaled} class="brush" />
 </g>
 
 <style>

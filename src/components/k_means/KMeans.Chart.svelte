@@ -22,7 +22,6 @@
   // Update data extents
   let xExtent = [0, 1];
   let yExtent = [0, 1];
-  $: console.log(yExtent);
 
   $: updateExtent(xExtent, "x");
   $: updateExtent(yExtent, "y");
