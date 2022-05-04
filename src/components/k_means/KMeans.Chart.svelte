@@ -22,24 +22,24 @@
   // Update data extents
   // let xExtent = [0, 1];
   // let yExtent = [0, 1];
-  let xExtent;
-  let yExtent;
-  $: console.log(yExtent);
+  // let xExtent;
+  // let yExtent;
+  // $: console.log(yExtent);
 
-  $: updateExtent(xExtent, "x");
-  $: updateExtent(yExtent, "y");
-  function updateExtent(toExtent, key) {
-    // Normalize to desired extent
-    const [min, max] = extent($data, (d) => d[key]);
+  // $: updateExtent(xExtent, "x");
+  // $: updateExtent(yExtent, "y");
+  // function updateExtent(toExtent, key) {
+  //   // Normalize to desired extent
+  //   const [min, max] = extent($data, (d) => d[key]);
 
-    $data.map((d) => {
-      const [a, b] = toExtent;
+  //   $data.map((d) => {
+  //     const [a, b] = toExtent;
 
-      d[key] = (b - a) * ((d[key] - min) / (max - min)) + a;
-    });
+  //     d[key] = (b - a) * ((d[key] - min) / (max - min)) + a;
+  //   });
 
-    $data = $data;
-  }
+  //   $data = $data;
+  // }
 
   // Hardcode sample data to explain distance metric
   // TODO: Update this
@@ -79,8 +79,8 @@
     <Svg>
       <!-- Marginal distributions -->
       {#if $scrollyIndex >= 3}
-        <Histogram bind:data={$data} bind:brushExtent={xExtent} type={"x"} {inset} />
-        <Histogram bind:data={$data} bind:brushExtent={yExtent} type={"y"} {inset} />
+        <!-- <Histogram bind:data={$data} type={"x"} {inset} />
+        <Histogram bind:data={$data} type={"y"} {inset} /> -->
       {/if}
 
       <!-- Decoration -->

@@ -40,12 +40,11 @@
   $: $data = updateData(datasetValue);
   function updateData(datasetValue) {
     // Sample and make a copy
-    // FIXME: Scale to [0, 1]?
-    // Should we not scale the original data? And only scale here?
     return copyShallowObjs(datasetValue.data.slice(0, numSamples));
   }
 
   // Run k-means
+  // TODO: Run this multiple times to show stochasticity
   let numClusters = 3;
   $: kMeansData = runKMeans($data, numClusters);
   function runKMeans(data, numClusters) {
@@ -164,6 +163,7 @@
     // // Re-index cluster ids after sorting
     // const clusterIds = kMeansResult.clusters.map((d) => clusterIdMap.get(d));
 
+    console.log("ran kmeans")
     return { centroids, centroidsHistory, assignmentsHistory };
   }
   $: $centroids = kMeansData.centroids;

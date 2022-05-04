@@ -24,7 +24,6 @@
   };
   $: totalIterations = $centroidsHistory.length;
 
-  // FIXME: There should be a spring for each centroid?
   // Or define a new spring whenever number of cluster changes
   // NOTE: Has to be sorted because the spring value is fixed
   let centroidsSpringed = spring(undefined);
@@ -57,26 +56,6 @@
       id: uid("cell")
     }));
   }
-
-  // Compute cluster assignments
-  // let keepPrev = false;
-  // $: assignments = updateAssignments($centroidsSpringed, keepPrev);
-  // function updateAssignments(centroidsSpringed, keepPrev) {
-  //   // Change the positions of the centroids
-  //   // But keep the assignments the same
-  //   if (keepPrev) {
-  //     return assignments.map(({ c, i }) => ({
-  //       c: centroidsSpringed[i],
-  //       i
-  //     }));
-  //   } else {
-  //     return $data.map((d) => closest(d, centroidsSpringed));
-  //   }
-  // }
-
-  // TODO: Also have to keep cache of index assignments?
-  // update centroidsSpring
-  // -> update assignments, which contain centroid positions and index assignments
 
   // Manual updating of centroids and cluster assignments
   let assignments;

@@ -7,7 +7,6 @@
   export let data = [0, 0];
   export let type = "x";
   export let inset;
-  export let brushExtent = [0, 1];
 
   const accessor = type === "x" ? (d) => d.x : type === "y" ? (d) => d.y : null;
   $: histogramXScale = $xScale;
@@ -54,45 +53,6 @@
   $: transformOrigin = type === "x" ? "bottom" : type === "y" ? "bottom right" : null;
 
   // Init brush
-  const brushResizePath = function (d) {
-    var e = +(d.type == "e"),
-      x = e ? 1 : -1,
-      y = height / 2;
-    return (
-      "M" +
-      0.5 * x +
-      "," +
-      y +
-      "A6,6 0 0 " +
-      e +
-      " " +
-      6.5 * x +
-      "," +
-      (y + 6) +
-      "V" +
-      (2 * y - 6) +
-      "A6,6 0 0 " +
-      e +
-      " " +
-      0.5 * x +
-      "," +
-      2 * y +
-      "Z" +
-      "M" +
-      2.5 * x +
-      "," +
-      (y + 8) +
-      "V" +
-      (2 * y - 8) +
-      "M" +
-      4.5 * x +
-      "," +
-      (y + 8) +
-      "V" +
-      (2 * y - 8)
-    );
-  };
-
   $: brush = brushX()
     .extent([
       [0, 0],
@@ -112,17 +72,20 @@
     extents[0] += inset;
     extents[1] -= inset;
 
-    brushExtent = extents;
+    // Normalize dataset on brushed
+    const [min, max] = dataExtent;
 
-    // FIXME: Update dataset on brushed
+    data.map((d) => {
+      const [a, b] = extents;
+
+      d[type] = (b - a) * ((d[type] - min) / (max - min)) + a;
+    });
+
+    data = data;
   }
 
   function brushable(node, move) {
-    const selection = select(node)
-      .call(brush)
-      // FIXME: Have to update as dataset changes
-      // .call(brush.move, [0, $height])
-      .call(brush.move, move);
+    const selection = select(node).call(brush).call(brush.move, move);
 
     // Remove overlay pointer-events
     selection.select(".overlay").attr("pointer-events", "none");
