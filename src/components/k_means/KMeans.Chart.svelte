@@ -1,7 +1,7 @@
 <script>
   import { clusterColors } from "$stores/misc";
   import { LayerCake, Svg, Html } from "layercake";
-  import { ascending } from "d3";
+  import { ascending, extent } from "d3";
   import { fade } from "svelte/transition";
   import { getContext } from "svelte";
   import KMeansScatter from "$lib/components/k_means/KMeans.Scatter.svelte";
@@ -11,6 +11,7 @@
   import ArrowAxis from "$components/k_means/ArrowAxis.svelte";
   import ListeningRect from "$components/custom_charts/ListeningRect.svelte";
   import KMeansVoronoi from "$lib/components/k_means/Voronoi.svelte";
+  import Histogram from "$lib/components/k_means/Histogram.svelte";
 
   const { data, clusterAssignments } = getContext("KMeans");
   const { scrollyIndex } = getContext("Scrolly");
@@ -18,7 +19,28 @@
   export let x;
   export let y;
 
+  // Update data extents
+  let xExtent = [0, 1];
+  let yExtent = [0, 1];
+  $: console.log(yExtent);
+
+  $: updateExtent(xExtent, "x");
+  $: updateExtent(yExtent, "y");
+  function updateExtent(toExtent, key) {
+    // Normalize to desired extent
+    const [min, max] = extent($data, (d) => d[key]);
+
+    $data.map((d) => {
+      const [a, b] = toExtent;
+
+      d[key] = (b - a) * ((d[key] - min) / (max - min)) + a;
+    });
+
+    $data = $data;
+  }
+
   // Hardcode sample data to explain distance metric
+  // TODO: Update this
   const sampleData = [
     { x: 0.9480809100559839, y: 0.7008366197126539, fill: clusterColors[2] },
     { x: 0.8783810712951932, y: 0.8241849997826217, fill: clusterColors[2] },
@@ -53,6 +75,12 @@
     </Html>
 
     <Svg>
+      <!-- Marginal distributions -->
+      {#if $scrollyIndex >= 3}
+        <Histogram bind:brushExtent={xExtent} type={"x"} {inset} />
+        <Histogram bind:brushExtent={yExtent} type={"y"} {inset} />
+      {/if}
+
       <!-- Decoration -->
       {#if $scrollyIndex >= 2 && $scrollyIndex <= 3}
         <ArrowAxis />
@@ -110,7 +138,8 @@
     height: 65vh;
     aspect-ratio: 1 / 1;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: 32px;
+    /* margin-right: auto; */
 
     /* border: 1px solid lightgrey; */
   }

@@ -78,8 +78,8 @@
     position: sticky;
     top: 10%;
     /* transform: translate(0, -50%); */
-    flex: 1 1 60%;
-    width: 60%;
+    flex: 1 1 50%;
+    width: 50%;
     height: 100%;
   }
 

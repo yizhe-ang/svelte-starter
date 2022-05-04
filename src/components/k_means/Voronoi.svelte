@@ -10,10 +10,19 @@
   import VoronoiLine from "$components/k_means/Voronoi.Line.svelte";
 
   const { scrollyIndex } = getContext("Scrolly");
-  const { data, centroids, centroidsHistory, clusterAssignments } = getContext("KMeans");
+  const { data, centroids, centroidsHistory, assignmentsHistory, numIterations } =
+    getContext("KMeans");
   const { width, height, xScale, yScale, xGet, yGet } = getContext("LayerCake");
 
   // const key = (d) => `${$centroids.length}-${d.clusterId}`;
+  const linesKey = (i) => {
+    if ($scrollyIndex >= 14) {
+      return `${i}-${assignments[i]}`;
+    } else {
+      return i;
+    }
+  };
+  $: totalIterations = $centroidsHistory.length;
 
   // FIXME: There should be a spring for each centroid?
   // Or define a new spring whenever number of cluster changes
@@ -49,46 +58,63 @@
     }));
   }
 
-  // FIXME: Keep history of centroids instead?
-  // And then update centroidsSpring
-  // const assignmentsHistory = [undefined, $clusterAssignments]
-  // $: updateAssignmentHistory($clusterAssignments)
-  // function updateAssignmentHistory(clusterAssignments) {
-  //   assignmentsHistory[0] = assignmentsHistory[1]
-  //   assignmentsHistory[1] = clusterAssignments
-  // }
-  // let currentAssignments = assignmentsHistory[1]
-
   // Compute cluster assignments
-  let keepPrev = false;
-  let assignmentsBuffer = [undefined, undefined];
-  $: assignments = updateAssignments($centroidsSpringed, keepPrev);
-  function updateAssignments(centroidsSpringed, keepPrev) {
-    // Change the positions of the centroids
-    // But keep the assignments the same
-    if (keepPrev) {
-      return assignments.map(({ c, i }) => ({
-        c: centroidsSpringed[i],
-        i
-      }));
-    } else {
-      return $data.map((d) => closest(d, centroidsSpringed));
-    }
-  }
+  // let keepPrev = false;
+  // $: assignments = updateAssignments($centroidsSpringed, keepPrev);
+  // function updateAssignments(centroidsSpringed, keepPrev) {
+  //   // Change the positions of the centroids
+  //   // But keep the assignments the same
+  //   if (keepPrev) {
+  //     return assignments.map(({ c, i }) => ({
+  //       c: centroidsSpringed[i],
+  //       i
+  //     }));
+  //   } else {
+  //     return $data.map((d) => closest(d, centroidsSpringed));
+  //   }
+  // }
 
   // TODO: Also have to keep cache of index assignments?
   // update centroidsSpring
   // -> update assignments, which contain centroid positions and index assignments
 
-  // Manual updating of centroids
-  $: if ($scrollyIndex >= 12 && $scrollyIndex <= 14) {
-    updateSpring($centroidsHistory[0]);
-  } else if ($scrollyIndex === 15) {
-    keepPrev = true;
-    updateSpring($centroidsHistory[1]);
-  } else if ($scrollyIndex === 16) {
-    keepPrev = false;
-    updateSpring($centroidsHistory[1]);
+  // Manual updating of centroids and cluster assignments
+  let assignments;
+  let interval;
+  let counter = 1;
+  let assignmentsCounter;
+  let centroidsCounter;
+
+  $: runScrollyEvents($scrollyIndex);
+  function runScrollyEvents(index) {
+    if (index <= 11) {
+      assignments = $assignmentsHistory[$assignmentsHistory.length - 1];
+    } else if (index >= 12 && index <= 14) {
+      assignments = $assignmentsHistory[0];
+      updateSpring($centroidsHistory[0]);
+      $numIterations = 1;
+    } else if (index === 15) {
+      assignments = $assignmentsHistory[0];
+      updateSpring($centroidsHistory[1]);
+      $numIterations = 1;
+    } else if (index === 16) {
+      // Perform the rest of the iterations
+      counter = 1;
+
+      interval = setInterval(() => {
+        counter++;
+        assignmentsCounter = Math.floor(counter / 2);
+        centroidsCounter = Math.ceil(counter / 2);
+
+        assignments = $assignmentsHistory[assignmentsCounter];
+        updateSpring($centroidsHistory[centroidsCounter]);
+        $numIterations = Math.floor(counter / 2) + 1
+      }, 700);
+    }
+  }
+
+  $: if (counter === totalIterations * 2 - 2) {
+    clearInterval(interval);
   }
 
   // To apply drag behavior as an action
@@ -179,9 +205,11 @@
 
 <!-- Lines from data point to centroid -->
 {#if ($scrollyIndex >= 11 && $scrollyIndex <= 11) || $scrollyIndex >= 14}
-  {#each $data as d, i (i)}
+  {#each $data as d, i (linesKey(i))}
     <!-- {@const { c, i: cI } = closest(d, $centroidsSpringed)} -->
-    {@const { c, i: cI } = assignments[i]}
+    {@const cI = assignments[i]}
+    {@const c = $centroidsSpringed[cI]}
+    <!-- {@const { c, i: cI } = assignments[i]} -->
     <VoronoiLine data={[d, c]} stroke={clusterColors[cI]} />
   {/each}
 {/if}

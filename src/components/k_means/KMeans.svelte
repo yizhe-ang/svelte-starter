@@ -3,10 +3,12 @@
   import { range, shuffle, ascending, leastIndex } from "d3";
   import { setContext, getContext } from "svelte";
   import { writable, get } from "svelte/store";
+  import { copyShallowObjs } from "$utils/helpers";
   import KMeansChart from "$components/k_means/KMeans.Chart.svelte";
+  import DatasetRadioGroup from "$components/k_means/DatasetRadioGroup.svelte";
   import MaxWidthWrapper from "$components/layouts/MaxWidthWrapper.svelte";
 
-  const { blobs } = getContext("Datasets");
+  const datasets = getContext("Datasets");
   const { scrollyIndex } = getContext("Scrolly");
 
   // Data accessors
@@ -15,6 +17,7 @@
 
   // Init chart data
   const numSamples = 45;
+
   const data = writable(
     range(numSamples).map(() => ({
       x: 0,
@@ -24,10 +27,23 @@
   // const data = writable(blobs.slice(0, numSamples));
   const centroids = writable(undefined);
   const centroidsHistory = writable(undefined);
-  const clusterAssignments = writable(undefined);
+  const assignmentsHistory = writable(undefined);
+  const numIterations = writable(0);
 
   // Store all chart data inside a context
-  setContext("KMeans", { data, centroids, centroidsHistory, clusterAssignments });
+  setContext("KMeans", { data, centroids, centroidsHistory, assignmentsHistory, numIterations });
+
+  // Compute data
+  let datasetValue = datasets[0];
+  const blobs = copyShallowObjs(datasets[0].data.slice(0, numSamples));
+
+  $: $data = updateData(datasetValue);
+  function updateData(datasetValue) {
+    // Sample and make a copy
+    // FIXME: Scale to [0, 1]?
+    // Should we not scale the original data? And only scale here?
+    return copyShallowObjs(datasetValue.data.slice(0, numSamples));
+  }
 
   // Run k-means
   let numClusters = 3;
@@ -48,18 +64,20 @@
       return Array.from({ length: 2 }, Math.random);
     });
 
-    const kMeansResults = kMeans(
-      data.map((d) => [x(d), y(d)]),
-      numClusters,
-      {
-        withIterations: true, // TODO: whether to store result for each iteration,
-        // distanceFunction: squaredDistance
-        // initialization: "kmeans++",
-        initialization: initCentroids
-      }
-    );
+    const kMeansResults = [
+      ...kMeans(
+        data.map((d) => [x(d), y(d)]),
+        numClusters,
+        {
+          withIterations: true, // TODO: whether to store result for each iteration,
+          // distanceFunction: squaredDistance
+          // initialization: "kmeans++",
+          initialization: initCentroids
+        }
+      )
+    ];
 
-    let centroidsHistory = Array.from(kMeansResults, (r) => {
+    let centroidsHistory = kMeansResults.map((r) => {
       return r.centroids.map((d) => ({
         x: d.centroid[0],
         y: d.centroid[1]
@@ -69,6 +87,10 @@
 
     // Sort the centroids
     // FIXME: Make this more efficient?
+    // FIXME: Have up to 9 centroids;
+    // each centroid occupies a specific position in the grid
+    // How to space n centroids equidistant in a grid?
+    // sorted id -> og id
     const sortedIndices = [...centroidsHistory[centroidsHistory.length - 1]]
       .map((d, i) => ({ ...d, i }))
       .sort((a, b) => ascending(a.x, b.x))
@@ -79,6 +101,11 @@
     });
 
     const centroids = centroidsHistory[centroidsHistory.length - 1];
+
+    // Re-index cluster assignments after sorting
+    const assignmentsHistory = centroidsHistory.map((arr) => {
+      return data.map((d) => closest(d, arr));
+    });
 
     // const centroids = centroidsHistory[centroidsHistory.length - 1];
     // const lastCentroids = centroidsHistory[centroidsHistory.length - 1]
@@ -137,17 +164,11 @@
     // // Re-index cluster ids after sorting
     // const clusterIds = kMeansResult.clusters.map((d) => clusterIdMap.get(d));
 
-    return { centroids, centroidsHistory };
+    return { centroids, centroidsHistory, assignmentsHistory };
   }
   $: $centroids = kMeansData.centroids;
   $: $centroidsHistory = kMeansData.centroidsHistory;
-  // $: $clusterIds = kMeansData.clusterIds;
-
-  // Compute cluster assignments
-  // $: $clusterAssignments = updateClusterAssignments($centroids);
-  // function updateClusterAssignments(centroids) {
-  //   return $data.map((d) => closest(d, centroids));
-  // }
+  $: $assignmentsHistory = kMeansData.assignmentsHistory;
 
   // Scrolly events that changes data
   $: console.log("step", $scrollyIndex);
@@ -166,13 +187,13 @@
       // FIXME: To destroy the timeout when the index changes?
       // Init y positions
       setTimeout(() => {
-        $data.map((d, i) => (d.y = blobs[i][1]));
+        $data.map((d, i) => (d.y = blobs[i].y));
         $data = $data;
       }, 500);
 
       // Then x positions
       setTimeout(() => {
-        $data.map((d, i) => (d.x = blobs[i][0]));
+        $data.map((d, i) => (d.x = blobs[i].x));
         $data = $data;
       }, 900);
     }
@@ -188,26 +209,34 @@
   function closest(d, arr) {
     const i = leastIndex(arr, (a) => Math.hypot(a.x - d.x, a.y - d.y));
 
-    return { c: arr[i], i };
+    return i;
   }
 </script>
 
-<!-- TODO: Control panel -->
-
+<!-- Control panel -->
 <MaxWidthWrapper>
   <!-- <button on:click={() => ($data = getData())}> Change Data </button> -->
 
-  <!-- TODO: Iteration counter -->
+  <!-- Choose dataset -->
+  <DatasetRadioGroup bind:value={datasetValue} />
 
-  <label for="num-clusters">k:</label>
-  <input
-    bind:value={numClusters}
-    type="number"
-    id="num-clusters"
-    name="num-clusters"
-    min="1"
-    max="10"
-  />
+  <!-- TODO: Number of samples? -->
+
+  <!-- Iteration counter -->
+  <div>Iteration {$numIterations}</div>
+
+  <!-- Number of clusters -->
+  <div>
+    <label for="num-clusters">k:</label>
+    <input
+      bind:value={numClusters}
+      type="number"
+      id="num-clusters"
+      name="num-clusters"
+      min="1"
+      max="10"
+    />
+  </div>
 </MaxWidthWrapper>
 <KMeansChart {x} {y} />
 
