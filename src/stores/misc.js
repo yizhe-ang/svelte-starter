@@ -3,5 +3,5 @@ import { writable } from "svelte/store";
 
 export const clusterColors = schemePastel1;
 
-export const data = writable(undefined);
-export const numIterations = writable(undefined);
+export const dataStore = writable(undefined);
+export const numIterationsStore = writable(undefined);
