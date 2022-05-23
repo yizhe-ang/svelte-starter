@@ -7,21 +7,22 @@
   import copy from "$data/doc.json";
   if (browser) console.log("svelte-starter version", __VERSION__);
   // FIXME: What is the best practice for loading datasets?
-  import blobs from "$data/datasets/blobs.json";
+  import blobs from "$lib/data/datasets/blobs_alt.json";
   import anisoBlobs from "$data/datasets/aniso_blobs.json";
   import unevenBlobs from "$data/datasets/uneven_blobs.json";
   import variedBlobs from "$data/datasets/varied_blobs.json";
 
-  const shuffle = shuffler(randomLcg(45));
+  // const shuffle = shuffler(randomLcg(45));
 
-  setContext(
-    "Datasets",
-    // FIXME: Where to perform preprocessing?
-    Object.entries({ blobs, anisoBlobs, unevenBlobs, variedBlobs }).map((d) => ({
-      name: d[0],
-      data: shuffle(d[1]).map((arr) => ({ x: arr[0], y: arr[1] }))
-    }))
-  );
+  // // FIXME: Just set this as a global store?
+  // setContext(
+  //   "Datasets",
+  //   // FIXME: Where to perform preprocessing?
+  //   Object.entries({ blobs, anisoBlobs, unevenBlobs, variedBlobs }).map((d) => ({
+  //     name: d[0],
+  //     data: shuffle(d[1]).map((arr) => ({ x: arr[0], y: arr[1] }))
+  //   }))
+  // );
 
   const preloadFont = [
     // "https://pudding.cool/assets/fonts/tiempos/TiemposTextWeb-Regular.woff2",

@@ -34,5 +34,7 @@
     height: 1em;
     overflow: visible;
     transform-origin: 50% 50%;
+
+    display: inline;
   }
 </style>

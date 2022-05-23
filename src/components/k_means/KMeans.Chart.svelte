@@ -1,5 +1,5 @@
 <script>
-  import { clusterColors } from "$stores/misc";
+  import { clusterColors, stepView } from "$stores/misc";
   import { LayerCake, Svg, Html } from "layercake";
   import { ascending, extent } from "d3";
   import { fade } from "svelte/transition";
@@ -9,44 +9,34 @@
   import Scatter from "$lib/components/k_means/Scatter.svelte";
   import CircleSpringed from "$lib/components/k_means/Circle.Springed.svelte";
   import ArrowAxis from "$components/k_means/ArrowAxis.svelte";
-  import ListeningRect from "$components/custom_charts/ListeningRect.svelte";
+  import ClickListenerRect from "$lib/components/k_means/ClickListenerRect.svelte";
+  import HoverListenerRect from "$lib/components/k_means/HoverListenerRect.svelte";
   import KMeansVoronoi from "$lib/components/k_means/Voronoi.svelte";
   import Histogram from "$lib/components/k_means/Histogram.svelte";
+  import ToCentroidsLines from "$lib/components/k_means/ToCentroidsLines.svelte";
+  import InteractionIndicator from "$lib/components/k_means/InteractionIndicator.svelte";
 
-  const { data, clusterAssignments } = getContext("KMeans");
+  const { data, assignmentsHistory } = getContext("KMeans");
   const { scrollyIndex } = getContext("Scrolly");
 
   export let x;
   export let y;
 
-  // Update data extents
-  // let xExtent = [0, 1];
-  // let yExtent = [0, 1];
-  // let xExtent;
-  // let yExtent;
-  // $: console.log(yExtent);
+  let hoveredPoint = { i: 6, d: $data[6] };
 
-  // $: updateExtent(xExtent, "x");
-  // $: updateExtent(yExtent, "y");
-  // function updateExtent(toExtent, key) {
-  //   // Normalize to desired extent
-  //   const [min, max] = extent($data, (d) => d[key]);
-
-  //   $data.map((d) => {
-  //     const [a, b] = toExtent;
-
-  //     d[key] = (b - a) * ((d[key] - min) / (max - min)) + a;
-  //   });
-
-  //   $data = $data;
-  // }
+  $: clusterAssignments = $assignmentsHistory[$assignmentsHistory.length - 1];
 
   // Hardcode sample data to explain distance metric
   // TODO: Update this
+  // const sampleData = [
+  //   { x: 0.9480809100559839, y: 0.7008366197126539, fill: clusterColors[2] },
+  //   { x: 0.8783810712951932, y: 0.8241849997826217, fill: clusterColors[2] },
+  //   { x: 0.5243915975264637, y: 0.610518407008911, fill: clusterColors[1] }
+  // ];
   const sampleData = [
-    { x: 0.9480809100559839, y: 0.7008366197126539, fill: clusterColors[2] },
-    { x: 0.8783810712951932, y: 0.8241849997826217, fill: clusterColors[2] },
-    { x: 0.5243915975264637, y: 0.610518407008911, fill: clusterColors[1] }
+    { x: 0.8724253053023101, y: 0.7271407765508389, fill: clusterColors[2] },
+    { x: 0.8959476388441352, y: 0.8760700961343391, fill: clusterColors[2] },
+    { x: 0.410617271319615, y: 0.5144693060869417, fill: clusterColors[1] }
   ];
   const sampleLines = [
     [sampleData[0], sampleData[1]],
@@ -69,18 +59,30 @@
   <LayerCake data={$data} {x} {y} {padding} xDomain={domain} yDomain={domain}>
     <Html>
       <!-- Decorative border -->
-      <!-- FIXME: Just a flat shadow instead? -->
-      <!-- Going for the aesthetic of bloomberg -->
       {#if $scrollyIndex >= 5}
         <div in:fade={{ delay: 1500 }} out:fade class="border" />
       {/if}
     </Html>
 
     <Svg>
+      <!-- FIXME: K-means is ran when initialized -->
+      <!-- How to prevent that? -->
       <!-- Marginal distributions -->
-      {#if $scrollyIndex >= 3}
-        <!-- <Histogram bind:data={$data} type={"x"} {inset} />
-        <Histogram bind:data={$data} type={"y"} {inset} /> -->
+      {#if $scrollyIndex >= 22}
+        <Histogram
+          bind:data={$data}
+          type={"x"}
+          {inset}
+          show={$scrollyIndex >= 22}
+          pointerEvents={$stepView ? "none" : "auto"}
+        />
+        <Histogram
+          bind:data={$data}
+          type={"y"}
+          {inset}
+          show={$scrollyIndex >= 22}
+          pointerEvents={$stepView ? "none" : "auto"}
+        />
       {/if}
 
       <!-- Decoration -->
@@ -88,9 +90,14 @@
         <ArrowAxis />
       {/if}
 
-      <!-- For clicking interactions -->
-      {#if true}
-        <ListeningRect pointerEvents={$scrollyIndex >= 11 ? "auto" : "auto"} />
+      <!-- For clicking (adding a point) interactions -->
+      {#if !$stepView && $scrollyIndex >= 23}
+        <ClickListenerRect />
+      {/if}
+
+      <!-- Lines to demo dist to centroids -->
+      {#if $scrollyIndex === 9}
+        <ToCentroidsLines {hoveredPoint} />
       {/if}
 
       <!-- Voronoi and related shapes -->
@@ -104,14 +111,22 @@
         {#each $data as d, i (d)}
           <CircleSpringed
             {d}
-            fill={$scrollyIndex >= 50 ? clusterColors[$clusterAssignments[i].i] : "#ccc"}
-            pointerEvents={$scrollyIndex >= 11 ? "auto" : "auto"}
+            fill={$scrollyIndex === 9
+              ? clusterColors[clusterAssignments[i]]
+              : "var(--color-gray-400)"}
+            stroke="var(--color-gray-400)"
+            pointerEvents={$scrollyIndex >= 23 && !$stepView ? "auto" : "auto"}
           />
         {/each}
       {/if}
 
+      <!-- For hover (show dist to centroids) interactions -->
+      {#if $scrollyIndex === 9}
+        <HoverListenerRect bind:hoveredPoint />
+      {/if}
+
       <!-- Distance metric demo -->
-      {#if $scrollyIndex >= 7 && $scrollyIndex <= 7}
+      {#if $scrollyIndex === 7}
         <!-- TODO: Can componentize this -->
         {#each sampleLines as d}
           <Line data={d} stroke={"hsl(0, 0%, 0%)"} strokeWidth={3} />
@@ -127,20 +142,20 @@
         />
       {/if}
 
-      <!-- Centroids -->
-      <!-- Should be draggable / springed etc. -->
-      <!-- <Scatter data={centroids} /> -->
+      <!-- Interaction indicator -->
+      <InteractionIndicator />
     </Svg>
   </LayerCake>
 </figure>
 
 <style>
   figure {
-    /* width: 100%; */
-    height: 65vh;
+    width: 100%;
+    /* width: 65vh; */
+    /* FIXME: Not widely supported? */
     aspect-ratio: 1 / 1;
-    margin-left: auto;
-    margin-right: 32px;
+    /* margin-left: auto; */
+    /* margin-right: 32px; */
     /* margin-right: auto; */
 
     /* border: 1px solid lightgrey; */
@@ -154,7 +169,7 @@
 
     /* background-color: lightpink; */
     /* box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); */
-    box-shadow: var(--shadow-elevation-medium);
+    box-shadow: var(--chart-shadow);
     border: 1px solid hsl(0, 10%, 90%);
     border-radius: 1%;
   }

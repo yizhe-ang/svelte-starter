@@ -1,30 +1,23 @@
 <script>
   import { getContext } from "svelte";
   import Demo from "$components/demo/Demo.svelte";
-  import WIP from "$components/helpers/WIP.svelte";
   import Footer from "$components/Footer.svelte";
+  import Hero from "$components/k_means/Hero.svelte";
   import KMeansScrolly from "$lib/components/k_means/KMeans.Scrolly.svelte";
-
-  const copy = getContext("copy");
-  console.log(copy);
+  import Conclusion from "$lib/components/k_means/Conclusion.svelte";
+  import scrollY from "$stores/scrollY.js";
 </script>
 
-<!-- <WIP /> -->
-
-<!-- <section id="hero">
-  <KMeansHero>
-    <h1>K-Means Clustering</h1>
-    <h2>A Visual Explainer</h2>
-  </KMeansHero>
-</section> -->
+{#if $scrollY === 0}
+  <Hero />
+{/if}
 
 <!-- FIXME: Do I need these semantic tags? -->
 <section id="scrolly">
   <KMeansScrolly />
 </section>
 
-<Demo />
-<Footer />
+<Conclusion />
 
 <style>
 </style>

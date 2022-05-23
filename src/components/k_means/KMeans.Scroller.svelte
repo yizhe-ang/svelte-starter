@@ -7,8 +7,6 @@
   let index;
   let offset;
   let progress;
-
-  $: console.log(index, offset, progress);
 </script>
 
 <Scroller

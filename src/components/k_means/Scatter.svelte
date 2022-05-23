@@ -17,9 +17,18 @@
   {#each data as d}
     {@const cx = $xGet(d)}
     {@const cy = $yGet(d)}
-    <circle
+    <!-- <circle
       in:fade={{ duration: 200 }}
       out:fade={{ duration: 200, delay: 400 }}
+      style:transform={`translate(${cx}px, ${cy}px)`}
+      {r}
+      fill={fillAccessor ? fillAccessor(d) : fill}
+      {stroke}
+      stroke-width={strokeWidth}
+      stroke-opacity={strokeOpacity}
+    /> -->
+    <circle
+      in:fade={{ duration: 200 }}
       style:transform={`translate(${cx}px, ${cy}px)`}
       {r}
       fill={fillAccessor ? fillAccessor(d) : fill}

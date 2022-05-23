@@ -1,47 +1,72 @@
 <script>
-  // FIXME: Is this all I need?
-  export let algoStep = 0;
+  import { totalIterations, algoStep, toggleKMeans } from "$stores/misc";
+  import Icon from "$components/helpers/Icon.svelte";
+  import IconButton from "$components/k_means/IconButton.svelte";
 
-  let numIterations = 2;
+  const firstStep = -1;
+  $: lastStep = $totalIterations * 2 - 2;
 
-  // Total number of steps: (numIterations + 1) * 2
-  $: lastStep = (numIterations + 1) * 2 - 1;
+  $: console.log("algoStep", $algoStep);
 </script>
 
 <div class="wrapper">
   <div class="ui-wrapper">
     <!-- Rerun clustering -->
-    <button on:click={() => {}}> Rerun </button>
-
-    <!-- TODO: Start and last buttons? -->
+    <!-- <button
+      on:click={() => {
+        $toggleKMeans = !$toggleKMeans;
+        // HACK: To trigger reactivity
+        $algoStep = -2;
+        $algoStep = firstStep;
+      }}
+    >
+      Rerun
+    </button> -->
 
     <!-- Step buttons -->
-    <button
-      on:click={() => {
-        algoStep = Math.max(algoStep - 1, 0);
+    <IconButton
+      name={"skip-back"}
+      onClick={() => {
+        $algoStep = firstStep;
       }}
-    >
-      Prev
-    </button>
-    <button
-      on:click={() => {
-        algoStep = Math.min(algoStep + 1, lastStep);
+    />
+    <IconButton
+      name={"play"}
+      direction={"s"}
+      onClick={() => {
+        $algoStep = Math.max($algoStep - 1, firstStep);
       }}
-    >
-      Next
-    </button>
+    />
+    <IconButton
+      name={"play"}
+      onClick={() => {
+        $algoStep = Math.min($algoStep + 1, lastStep);
+      }}
+    />
+    <IconButton
+      name={"skip-forward"}
+      onClick={() => {
+        $algoStep = lastStep;
+      }}
+    />
   </div>
 
   <div class="steps-wrapper">
-    <div class:active={algoStep === 0}>Initialize prototypes</div>
-    <div>Repeat until covergence</div>
-    <div class:active={algoStep % 2 === 1 && algoStep !== lastStep}>
-      Match each data point to its closest prototype
+    <div class:active={$algoStep === firstStep}>Initialize prototypes</div>
+    <div class="repeat-label">Repeat until convergence:</div>
+    <div
+      class="repeat-step"
+      class:active={$algoStep % 2 === 0 && ![firstStep, lastStep].includes($algoStep)}
+    >
+      Assign each data point to its closest prototype
     </div>
-    <div class:active={algoStep % 2 === 0 && algoStep !== 0 && algoStep !== lastStep}>
+    <div
+      class="repeat-step"
+      class:active={$algoStep % 2 === 1 && ![firstStep, lastStep].includes($algoStep)}
+    >
       Update prototypes to be the mean of its assigned data points
     </div>
-    <div class:active={algoStep === lastStep}>Final cluster assignments</div>
+    <div class:active={$algoStep === lastStep}>Obtain final cluster assignments</div>
   </div>
 </div>
 
@@ -54,7 +79,8 @@
 
   .ui-wrapper {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 8px;
   }
 
   .steps-wrapper {
@@ -63,7 +89,27 @@
     gap: 8px;
   }
 
-  .active {
-    background: lightgrey;
+  .steps-wrapper div {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    font-weight: 600;
+
+    border-radius: 5px;
+    transition: background 200ms;
+  }
+
+  .steps-wrapper .repeat-label {
+    font-weight: 300;
+  }
+
+  .steps-wrapper .repeat-step {
+    margin-left: 24px;
+  }
+
+  .steps-wrapper .active {
+    background: var(--color-gray-200);
   }
 </style>
