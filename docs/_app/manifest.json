@@ -1,69 +1,61 @@
 {
   ".svelte-kit/runtime/client/start.js": {
-    "file": "start-89efaaf1.js",
+    "file": "start-1daaf6fb.js",
     "src": ".svelte-kit/runtime/client/start.js",
     "isEntry": true,
     "imports": [
-      "_index-e6b48ce0.js",
-      "_index-2a3aac3d.js"
+      "_index-fb7d380c.js",
+      "_index-fd648757.js"
     ],
     "dynamicImports": [
       "src/routes/__layout.svelte",
       ".svelte-kit/runtime/components/error.svelte",
-      "src/routes/index.svelte",
-      "src/routes/test.svelte"
+      "src/routes/index.svelte"
     ]
   },
   "src/routes/__layout.svelte": {
-    "file": "pages/__layout.svelte-07ce947c.js",
+    "file": "pages/__layout.svelte-d883f70d.js",
     "src": "src/routes/__layout.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_index-e6b48ce0.js"
+      "_index-fb7d380c.js",
+      "_wordmark-0849a013.js"
     ],
     "css": [
-      "assets/pages/__layout.svelte-12d9f698.css"
+      "assets/pages/__layout.svelte-a496c96e.css"
     ]
   },
   ".svelte-kit/runtime/components/error.svelte": {
-    "file": "error.svelte-21e91592.js",
+    "file": "error.svelte-3c33da2e.js",
     "src": ".svelte-kit/runtime/components/error.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_index-e6b48ce0.js"
+      "_index-fb7d380c.js"
     ]
   },
   "src/routes/index.svelte": {
-    "file": "pages/index.svelte-1853b3cf.js",
+    "file": "pages/index.svelte-361914bc.js",
     "src": "src/routes/index.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_index-e6b48ce0.js",
-      "_index-2a3aac3d.js"
+      "_index-fb7d380c.js",
+      "_index-fd648757.js",
+      "_wordmark-0849a013.js"
     ],
     "css": [
       "assets/pages/index.svelte-da171c94.css"
     ]
   },
-  "src/routes/test.svelte": {
-    "file": "pages/test.svelte-1ff1ca93.js",
-    "src": "src/routes/test.svelte",
-    "isEntry": true,
-    "isDynamicEntry": true,
-    "imports": [
-      "_index-e6b48ce0.js"
-    ]
+  "_index-fb7d380c.js": {
+    "file": "chunks/index-fb7d380c.js"
   },
-  "_index-e6b48ce0.js": {
-    "file": "chunks/index-e6b48ce0.js"
-  },
-  "_index-2a3aac3d.js": {
-    "file": "chunks/index-2a3aac3d.js",
+  "_index-fd648757.js": {
+    "file": "chunks/index-fd648757.js",
     "imports": [
-      "_index-e6b48ce0.js"
+      "_index-fb7d380c.js"
     ]
   },
   "_wordmark-0849a013.js": {
