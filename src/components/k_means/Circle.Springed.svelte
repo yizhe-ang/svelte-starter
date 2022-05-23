@@ -43,15 +43,11 @@
 </script>
 
 <!-- FIXME: Animations make it laggy -->
-<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <circle
   transition:fade={{ duration: 200, easing: cubicIn }}
   on:click={() => {
     // Remove selected data point
     data.update((s) => s.filter((datum) => !Object.is(datum, d)));
-  }}
-  on:mouseover={() => {
-    console.log(d);
   }}
   use:draggable={d}
   style:transform={`translate(${$position[0]}px, ${$position[1]}px)`}

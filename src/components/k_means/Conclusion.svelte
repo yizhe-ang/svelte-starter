@@ -5,7 +5,7 @@
 
 <div class="wrapper">
   <MaxWidthWrapper maxWidth={"70ch"}>
-    <SectionTitle tag={"h2"} index={"4."} title={"Conclusion / Recap"} />
+    <SectionTitle tag={"h2"} index={"4."} title={"Further Reading"} />
     <p>
       The following are resources I'd consulted heavily while creating this article, and are great
       starting points for further reading:
@@ -23,7 +23,7 @@
         >.
       </li>
       <li>
-        Section 21.3 of the <a href="https://probml.github.io/pml-book/book1.html"
+        Chapter 21.3 of the <a href="https://probml.github.io/pml-book/book1.html"
           >Probabilistic Machine Learning: An Introduction</a
         > textbook by Kevin Patrick Murphy.
       </li>
@@ -34,7 +34,7 @@
 <style>
   .wrapper {
     margin-top: -15vh;
-    padding-bottom: 100px
+    padding-bottom: 200px
   }
 
   ul {

@@ -115,7 +115,7 @@
               ? clusterColors[clusterAssignments[i]]
               : "var(--color-gray-400)"}
             stroke="var(--color-gray-400)"
-            pointerEvents={$scrollyIndex >= 23 && !$stepView ? "auto" : "auto"}
+            pointerEvents={$scrollyIndex >= 23 && !$stepView ? "auto" : "none"}
           />
         {/each}
       {/if}

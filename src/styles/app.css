@@ -86,6 +86,10 @@
     #ffffff 3.9978px -0.132717px 0px;
 }
 
+::selection {
+  background-color: var(--color-gray-200);
+}
+
 b {
   font-weight: 650;
 }
