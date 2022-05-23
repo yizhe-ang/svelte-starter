@@ -1,5 +1,6 @@
 <script>
   import { drag, select } from "d3";
+  import { stepView } from "$stores/misc";
   import { clamp } from "$utils/helpers.js";
   import { spring } from "svelte/motion";
   import { getContext } from "svelte";
@@ -12,10 +13,10 @@
   export let d;
   export let r = 5;
   export let fill = "#ccc";
-  export let fillOpacity = "0.5";
+  export let fillOpacity = 0.3;
   export let stroke = "#000";
   export let strokeWidth = 1;
-  export let strokeOpacity = 0.3;
+  export let strokeOpacity = 0.9;
   export let pointerEvents = "auto";
 
   // Every circle has its own spring store as its state
@@ -41,7 +42,29 @@
   }
 </script>
 
+<!-- FIXME: Animations make it laggy -->
+<!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <circle
+  transition:fade={{ duration: 200, easing: cubicIn }}
+  on:click={() => {
+    // Remove selected data point
+    data.update((s) => s.filter((datum) => !Object.is(datum, d)));
+  }}
+  on:mouseover={() => {
+    console.log(d);
+  }}
+  use:draggable={d}
+  style:transform={`translate(${$position[0]}px, ${$position[1]}px)`}
+  {r}
+  {fill}
+  fill-opacity={fillOpacity}
+  {stroke}
+  stroke-width={strokeWidth}
+  stroke-opacity={strokeOpacity}
+  style:pointer-events={pointerEvents}
+/>
+
+<!-- <circle
   in:scale={{ duration: 500, easing: backOut }}
   out:scale={{ duration: 350, easing: cubicIn }}
   on:click={() => {
@@ -57,13 +80,13 @@
   stroke-width={strokeWidth}
   stroke-opacity={strokeOpacity}
   style:pointer-events={pointerEvents}
-/>
-
+/> -->
 <style>
   circle {
     transform-box: fill-box;
     transform-origin: center;
     pointer-events: auto;
+    /* cursor: pointer; */
 
     transition: fill 250ms;
 

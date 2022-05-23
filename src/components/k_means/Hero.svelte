@@ -1,28 +1,26 @@
-<div>
-  <slot />
+<script>
+  import scrollY from "$stores/scrollY.js";
+  import { LayerCake, Svg } from "layercake";
+  import HeroVoronoi from "$components/k_means/Hero.Voronoi.svelte";
+
+  const numPoints = 50;
+  const points = Array.from({ length: numPoints }, () => [Math.random(), Math.random()]);
+</script>
+
+<div class="wrapper">
+  <LayerCake data={points} x={0} y={1}>
+    <Svg>
+      <HeroVoronoi />
+    </Svg>
+  </LayerCake>
 </div>
 
 <style>
-  div {
-    /* Zoom out to simulate larger / taller screens */
-    /* Default height of 80vh */
-    /* Has no explicit max-height; can grow to accommodate excess child content */
-    /* Height is clamped at 500px (in particular on larger / taller screens) */
-    /* min-height: min(80vh, 500px); */
-    height: 105vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-    text-shadow: 0px 0.3em 1em hsl(295deg 100% 10%);
-
-    /* background: url(''); */
-    background-size: cover;
-    background-position: bottom center;
-
-    background-color: lightgrey;
+  .wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 </style>

@@ -21,17 +21,17 @@
     /* transition: background 500ms ease; */
     /* box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2); */
     text-align: left;
-    /* width: 100%; */
-    /* margin: auto; */
-    /* margin-left: 16px; */
-    max-width: 650px;
+
+    width: min(45vw, 600px);
     /* max-width: 60ch; */
 
-    --border-color: 0, 10%, 95%;
-    --border-size: 8px;
+    --border-color: var(--hsl-gray-100);
+    --border-size: 16px;
     border-left: var(--border-size) solid hsl(var(--border-color), 0);
     transition: border-left 500ms ease;
     margin-left: calc(-1 * var(--border-size));
+
+    border-radius: 1%;
   }
 
   div.active {

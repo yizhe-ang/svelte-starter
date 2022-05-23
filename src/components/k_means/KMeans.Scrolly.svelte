@@ -13,10 +13,8 @@
   // TODO: Set index ranges for different scrolly sections / events here
 
   // Scroller parameters
-  // let value;
   const scrollyIndex = writable(undefined);
   setContext("Scrolly", { scrollyIndex });
-  // $: $scrollyIndex = value;
 
   // Init scrollama
   onMount(async () => {
@@ -34,12 +32,8 @@
 </script>
 
 <!-- TODO: Clicking each section title shows the ToC -->
-<!-- TODO: Cool ass hero interactive hero image -->
-<!-- {#if $scrollyIndex === 0}
-  <Hero />
-{/if} -->
 
-<div class="wrapper">
+<div class="wrapper" style:pointer-events={$scrollyIndex === 0 ? "none" : "auto"}>
   <div class="foreground-wrapper">
     <ScrollyStepWrapper height={"100vh"}>
       <Header />
@@ -63,7 +57,7 @@
 
 <style>
   .spacer {
-    height: 40vh;
+    height: 30vh;
   }
 
   .wrapper {
@@ -76,8 +70,9 @@
 
   .background-wrapper {
     position: sticky;
-    top: 10%;
-    /* transform: translate(0, -50%); */
+    /* Center vertically */
+    top: 47%;
+    transform: translate(0, -50%);
     flex: 1 1 50%;
     width: 50%;
     height: 100%;
