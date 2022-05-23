@@ -155,3 +155,27 @@ label,
 input {
   font-family: var(--sans);
 }
+
+h1 {
+	font-size: var(--48px);
+}
+
+h2 {
+	font-size: var(--36px);
+}
+
+h3 {
+	font-size: var(--28px);
+}
+
+h4 {
+	font-size: var(--24px);
+}
+
+h5 {
+	font-size: var(--22px);
+}
+
+h6 {
+	font-size: var(--20px);
+}
