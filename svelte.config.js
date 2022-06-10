@@ -1,12 +1,11 @@
 import adapter from "@sveltejs/adapter-auto"
-// import adapter from "@sveltejs/adapter-static";
 import autoprefixer from "autoprefixer";
+// import adapter from "@sveltejs/adapter-static";
 import dsv from "@rollup/plugin-dsv";
 import path from "path";
 import { readFileSync } from "fs";
 import sveltePreprocess from "svelte-preprocess";
 import svg from "vite-plugin-svgstring";
-import autoprefixer from "autoprefixer";
 import { timeFormat } from "d3";
 
 const { version, subdirectory } = JSON.parse(readFileSync("package.json", "utf8"));
