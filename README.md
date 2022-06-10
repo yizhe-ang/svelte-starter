@@ -54,9 +54,7 @@ If you are hosting the project on a subdirectory, set it in `package.json`.
 For example, if you are deploying to `https://domain.com/2021/01/test`:
 
 ```json
-"subdirectory": {
-  "path": "/2021/01/test"
-}
+"subdirectory": "/2021/01/test"
 ```
 
 ## Style
@@ -94,7 +92,6 @@ import Example from "$components/Example.svelte";
 
 * `Footer.svelte`: Pudding recirculation and social links.
 * `Header.svelte`: Pudding masthead.
-* `Header.svelte`: Pudding logo.
 
 ### Helper Components
 
@@ -105,15 +102,15 @@ Located in `src/lib/components/helpers`.
 import Example from "$components/helpers/Example.svelte";
 ```
 
-* `ButtonSet.svelte`: Accessible button group inputs
-* `Icon.svelte`: Simple integration with Feather Icons
-* `Range.svelte`: Customizable range slider
-* `Scrolly.svelte`: Scrollytelling
-* `SortTable.svelte`: Sortable semantic table with customizable props
-* `Slider.svelte (and Slider.Slide.svelte)`: A slider widget, especially useful for swipe/slide stories
-* `Tap.svelte`: Edge-of-screen tapping library, designed to integrate with slider
-* `Toggle.svelte`: Accessible toggle inputs
-* `WIP.svelte`: A sticky banner saying this project is a WIP
+* `ButtonSet.svelte`: Accessible button group inputs.
+* `Icon.svelte`: Simple integration with Feather Icons.
+* `Range.svelte`: Customizable range slider.
+* `Scrolly.svelte`: Scrollytelling.
+* `SortTable.svelte`: Sortable semantic table with customizable props.
+* `Slider.svelte (and Slider.Slide.svelte)`: A slider widget, especially useful for swipe/slide stories.
+* `Tap.svelte`: Edge-of-screen tapping library, designed to integrate with slider.
+* `Toggle.svelte`: Accessible toggle inputs.
+* `WIP.svelte`: A sticky banner saying this project is a WIP.
 
 ### Chart Components
 
@@ -135,6 +132,7 @@ import example from "$actions/action.js";
 
 * `focusTrap.js`: Enable a keyboard focus trap for modals and menus.
 * `inView.js`: detect when an element enters or exits the viewport.
+* `canTab.js`: enable/disable tabbing on child elements.
 
 ### Stores
 
@@ -148,7 +146,7 @@ import { example } from "$stores/misc.js";
 
 * `mq`: returns an object of media queries booleans if they are enabled or not. You can modify them in the js file.
 * `viewport`: returns an object `{ width, height }` of the viewport dimensions. It is debounced for performance.
-* `scrollY`: returns an number window vertical scroll position. It is throttled using rAF for performance.
+* `scrollY`: returns a number of window vertical scroll position. It is throttled using rAF for performance.
 * `timer`: returns an object { timer, elapsed }. `timer` has 5 methods (start, stop, toggle, set, reset) and `elapsed` is a store that is the number of ms.
 
 ### Utils
@@ -167,6 +165,7 @@ import example from "$utils/example.js";
 * `localStorage.js`: Read and write to local storage.
 * `mapToArray.js`: Convenience function to convert a map to an array.
 * `move.js`: transform translate function shorthand.
+* `previous.js`: keep track of the previous value of a store.
 * `transformSvg.js`: Custom transition lets you apply an svg transform property with the in/out svelte transition. Parameters (with defaults):
 * `translate.js`: Convenience function for transform translate css.
 * `urlParams.js`: Get and set url parameters.

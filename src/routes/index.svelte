@@ -4,13 +4,8 @@
   import { browser } from "$app/env";
   import Meta from "$components/Meta.svelte";
   import App from "$components/App.svelte";
-  import copy from "$data/doc.json";
-  if (browser) console.log("svelte-starter version", __VERSION__);
-  // FIXME: What is the best practice for loading datasets?
-  import blobs from "$lib/data/datasets/blobs_alt.json";
-  import anisoBlobs from "$data/datasets/aniso_blobs.json";
-  import unevenBlobs from "$data/datasets/uneven_blobs.json";
-  import variedBlobs from "$data/datasets/varied_blobs.json";
+  import copy from "$data/copy.json";
+  import version from "$utils/version.js";
 
   // const shuffle = shuffler(randomLcg(45));
 
