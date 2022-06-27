@@ -3,17 +3,17 @@
  * Generated on Tue, 31 May 2022 13:42:06 GMT
  */
 
- :root {
-  --category-blue: #4477aa;
-  --category-red: #ee6677;
+:root {
+  --category-blue: #4477AA;
+  --category-red: #EE6677;
   --category-green: #228833;
-  --category-yellow: #ccbb44;
-  --category-cyan: #66ccee;
-  --category-purple: #aa3377;
-  --category-gray: #bbbbbb;
+  --category-yellow: #CCBB44;
+  --category-cyan: #66CCEE;
+  --category-purple: #AA3377;
+  --category-gray: #BBBBBB;
   --color-black: #000000;
   --color-white: #ffffff;
-  /* --color-gray-50: #f7f7f7;
+  --color-gray-50: #f7f7f7;
   --color-gray-100: #efefef;
   --color-gray-200: #dfdfdf;
   --color-gray-300: #cacaca;
@@ -23,7 +23,7 @@
   --color-gray-700: #4e4e4e;
   --color-gray-800: #373737;
   --color-gray-900: #262626;
-  --color-gray-1000: #191919; */
+  --color-gray-1000: #191919;
   --color-purple: #a239ca;
   --color-blue: #4717f6;
   --color-green: #34a29e;
@@ -48,4 +48,41 @@
   --96px: 6rem;
   --112px: 7rem;
   --128px: 8rem;
+
+  /* Slate */
+  /* --hsl-gray-50: 210, 40%, 98%;
+  --hsl-gray-100: 210, 40%, 96.1%;
+  --hsl-gray-200: 214.3, 31.8%, 91.4%;
+  --hsl-gray-300: 212.7, 26.8%, 83.9%;
+  --hsl-gray-400: 215, 20.2%, 65.1%;
+  --hsl-gray-500: 215.4, 16.3%, 46.9%;
+  --hsl-gray-600: 215.3, 19.3%, 34.5%;
+  --hsl-gray-700: 215.3, 25%, 26.7%;
+  --hsl-gray-800: 217.2, 32.6%, 17.5%;
+  --hsl-gray-900: 222.2, 47.4%, 11.2%; */
+
+  /* Gray */
+  /* --hsl-gray-50: 210, 20%, 98%;
+  --hsl-gray-100: 220, 14.3%, 95.9%;
+  --hsl-gray-200: 220, 13%, 91%;
+  --hsl-gray-300: 216, 12.2%, 83.9%;
+  --hsl-gray-400: 217.9, 10.6%, 64.9%;
+  --hsl-gray-500: 220, 8.9%, 46.1%;
+  --hsl-gray-600: 215, 13.8%, 34.1%;
+  --hsl-gray-700: 216.9, 19.1%, 26.7%;
+  --hsl-gray-800: 215, 27.9%, 16.9%;
+  --hsl-gray-900: 220.9, 39.3%, 11%; */
+
+  /* Stone */
+  /* --hsl-gray-50: 60, 9%, 98%;
+  --hsl-gray-100: 60, 5%, 96%;
+  --hsl-gray-200: 20, 6%, 90%;
+  --hsl-gray-300: 24, 6%, 83%;
+  --hsl-gray-400: 24, 5%, 64%;
+  --hsl-gray-500: 25, 5%, 45%;
+  --hsl-gray-600: 33, 5%, 32%;
+  --hsl-gray-700: 30, 6%, 25%;
+  --hsl-gray-800: 12, 6%, 15%;
+  --hsl-gray-900: 24, 10%, 10%;
+  */
 }
