@@ -65,6 +65,10 @@ For variable parity in both CSS and JS, modify files in the `properties` folder 
 
 Run `npm run style` to regenerate the style dictionary.
 
+#### Some css utility classes in reset.css
+* `.sr-only`: makes content invisible available for screen reader
+* `.text-outline`: adds a psuedo stroke to text element
+
 ### Fonts ⚠️
 SvelteKit still hasn't resolved an issue with fonts with subdirectory-hosted projects. The simplest solution right now is to point to an absolute hosted font. If you need it to be local/relative to the project, ask Russell.
 
@@ -186,3 +190,6 @@ import example from "$utils/example.js";
   }
 }
 ```
+## Tips
+
+If you are working with data from a spreadsheet (that lives as a csv file in `src/data`), you can keep the sheet as-is and preserve the working sheet, then use `routes/index.js` do you clean/parse just what you need to use in the browser optimize the front-end payload.
