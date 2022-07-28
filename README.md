@@ -31,6 +31,8 @@ This [starter template](https://github.com/the-pudding/svelte-starter) aims to q
 npm run dev
 ```
 
+Change the script in `package.json` to `"dev": "svelte-kit dev --host"` to test on your local network on a different device.
+
 ## Deploy
 ```bash
 npm run build
@@ -107,7 +109,9 @@ import Example from "$components/helpers/Example.svelte";
 ```
 
 * `ButtonSet.svelte`: Accessible button group inputs.
+* `Chunk.svelte`: Split text into smaller dom element chunks.
 * `Icon.svelte`: Simple integration with Feather Icons.
+* `MotionToggle.svelte`: A toggle button to enable/disable front-end user motion preference.
 * `Range.svelte`: Customizable range slider.
 * `Scrolly.svelte`: Scrollytelling.
 * `SortTable.svelte`: Sortable semantic table with customizable props.
@@ -149,9 +153,11 @@ import { example } from "$stores/misc.js";
 ```
 
 * `mq`: returns an object of media queries booleans if they are enabled or not. You can modify them in the js file.
-* `viewport`: returns an object `{ width, height }` of the viewport dimensions. It is debounced for performance.
+* `previous`: returns the previous value of another store.
+* `reducedMotion`: returns a boolean of front-end user event to enable/disable motion preference.
 * `scrollY`: returns a number of window vertical scroll position. It is throttled using rAF for performance.
-* `timer`: returns an object { timer, elapsed }. `timer` has 5 methods (start, stop, toggle, set, reset) and `elapsed` is a store that is the number of ms.
+* `timer`: returns an object `{ timer, elapsed }`. `timer` has 5 methods (start, stop, toggle, set, reset) and `elapsed` is a store that is the number of ms.
+* `viewport`: returns an object `{ width, height }` of the viewport dimensions. It is debounced for performance.
 
 ### Utils
 
