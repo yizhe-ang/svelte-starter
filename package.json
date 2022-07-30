@@ -1,10 +1,10 @@
 {
-  "name": "svelte-starter",
-  "version": "3.0.40",
-  "scripts": {
-    "gdoc": "node tasks/fetch-google.js",
-    "style": "node tasks/style-dictionary.js",
-    "dev": "vite dev",
+	"name": "svelte-starter",
+	"version": "3.1.2",
+	"scripts": {
+		"gdoc": "node tasks/fetch-google.js",
+		"style": "node tasks/style-dictionary.js",
+		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check --plugin-search-dir=. .",
