@@ -49,6 +49,17 @@
   --112px: 7rem;
   --128px: 8rem;
 
+  /* --color-gray-50: hsl(var(--hsl-gray-50));
+	--color-gray-100: hsl(var(--hsl-gray-100));
+	--color-gray-200: hsl(var(--hsl-gray-200));
+	--color-gray-300: hsl(var(--hsl-gray-300));
+	--color-gray-400: hsl(var(--hsl-gray-400));
+	--color-gray-500: hsl(var(--hsl-gray-500));
+	--color-gray-600: hsl(var(--hsl-gray-600));
+	--color-gray-700: hsl(var(--hsl-gray-700));
+	--color-gray-800: hsl(var(--hsl-gray-800));
+	--color-gray-900: hsl(var(--hsl-gray-900)); */
+
   /* Slate */
   /* --hsl-gray-50: 210, 40%, 98%;
   --hsl-gray-100: 210, 40%, 96.1%;
