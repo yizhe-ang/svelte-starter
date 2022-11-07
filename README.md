@@ -8,7 +8,7 @@ This [starter template](https://github.com/the-pudding/svelte-starter) aims to q
 
 ### Features
 
-- [Feather Icons](https://github.com/feathericons/feather) for simple/easy svg icons
+- [Lucide Icons](https://lucide.dev/) for simple/easy svg icons
 - [ArchieML](http://archieml.org/) for micro-CMS powered by Google Docs and Sheets
 - [Style Dictionary](https://amzn.github.io/style-dictionary/) for CSS/JS style parity
 - CSV, JSON, and SVG imports
@@ -119,7 +119,7 @@ import Example from "$components/helpers/Example.svelte";
 * `ButtonSet.svelte`: Accessible button group inputs.
 * `Chunk.svelte`: Split text into smaller dom element chunks.
 * `Countdown.svelte`: Countdown timer text.
-* `Icon.svelte`: Simple integration with Feather Icons.
+* `Icon.svelte`: Simple integration with Lucide Icons.
 * `MotionToggle.svelte`: A toggle button to enable/disable front-end user motion preference.
 * `Range.svelte`: Customizable range slider.
 * `Scrolly.svelte`: Scrollytelling.
@@ -179,7 +179,9 @@ import example from "$utils/example.js";
 
 * `checkOverlap.js`: Label overlapping detection. Loops through selection of nodes and adds a class to the ones that are overlapping. Once one is hidden it ignores it.
 * `csvDownload.js`: Converts a flat array of data to CSV content ready to be used as an `href` value for download.
+* `loadCsv.js`: Loads and parses a CSV file.
 * `loadImage.js`: Loads an image.
+* `loadJson.js`: Loads and parses a JSON file.
 * `loadPixels.js`: Loads the pixel data of an image via an offscreen canvas.
 * `localStorage.js`: Read and write to local storage.
 * `mapToArray.js`: Convenience function to convert a map to an array.

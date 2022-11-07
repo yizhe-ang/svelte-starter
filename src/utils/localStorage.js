@@ -11,22 +11,37 @@ const isReady = () => {
 		hasStorage = true;
 	} catch (e) {
 		hasStorage = false;
+	} finally {
+		return hasStorage;
 	}
 };
 
 const remove = (key) => {
 	if (!isReady()) return;
-	localStorage.removeItem(key);
+	try {
+		localStorage.removeItem(key);
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 const set = (key, value) => {
 	if (!isReady()) return;
-	localStorage.setItem(key, JSON.stringify(value));
+	try {
+		localStorage.setItem(key, JSON.stringify(value));
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 const get = (key) => {
 	if (!isReady()) return;
-	return JSON.parse(localStorage.getItem(key));
+	try {
+		return JSON.parse(localStorage.getItem(key));
+	} catch (err) {
+		console.log(err);
+		return undefined;
+	}
 };
 
 export default {

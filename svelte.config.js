@@ -27,6 +27,11 @@ const config = {
 		paths: {
 			base
 		}
+	},
+	vitePlugin: {
+		experimental: {
+			inspector: { holdMode: true }
+		}
 	}
 };
 
